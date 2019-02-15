@@ -1,0 +1,86 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectR", "ConnectR\ConnectR.csproj", "{81461952-85E7-4A7B-A611-51F14E5A6453}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectR.AspNetCore", "ConnectR.AspNetCore\ConnectR.AspNetCore.csproj", "{C66FC549-7618-4D05-8E68-13BB48673F9A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectR.AspNetCore.Autofac", "ConnectR.AspNetCore.Autofac\ConnectR.AspNetCore.Autofac.csproj", "{562C48D7-A87A-4A2B-B4CA-214A8E448A8F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectR.AspNetCore.Tests", "ConnectR.AspNetCore.Tests\ConnectR.AspNetCore.Tests.csproj", "{50A8B42A-A3ED-4FF8-8C81-F5C6CA7C903E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectR.Autofac", "ConnectR.Autofac\ConnectR.Autofac.csproj", "{24346E2C-AE7C-4369-BB71-7E75A988816B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectR.BlazorHttpClient", "ConnectR.BlazorHttpClient\ConnectR.BlazorHttpClient.csproj", "{89E1CDF9-BBAB-43C1-AC32-328DA6619FF5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectR.HttpClient", "ConnectR.HttpClient\ConnectR.HttpClient.csproj", "{6C174FCE-2E8D-43C6-BED6-DAE0182F96FA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectR.HttpClient.Autofac", "ConnectR.HttpClient.Autofac\ConnectR.HttpClient.Autofac.csproj", "{616AA45F-BBAB-4957-A777-92C6D1B79953}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectR.HttpClient.Tests", "ConnectR.HttpClient.Tests\ConnectR.HttpClient.Tests.csproj", "{ACCCEED7-A06B-47BB-90F8-78DB50C0886C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectR.Tests", "ConnectR.Tests\ConnectR.Tests.csproj", "{5EF500FC-1452-46DF-B121-DF1D1B4D6691}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution ITems", "_Solution ITems", "{8737698F-5D9F-4D4B-8BB9-81A231FE346C}"
+	ProjectSection(SolutionItems) = preProject
+		GitVersion.yml = GitVersion.yml
+		LICENSE = LICENSE
+		ConnectR.snk = ConnectR.snk
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{81461952-85E7-4A7B-A611-51F14E5A6453}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81461952-85E7-4A7B-A611-51F14E5A6453}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81461952-85E7-4A7B-A611-51F14E5A6453}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81461952-85E7-4A7B-A611-51F14E5A6453}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C66FC549-7618-4D05-8E68-13BB48673F9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C66FC549-7618-4D05-8E68-13BB48673F9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C66FC549-7618-4D05-8E68-13BB48673F9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C66FC549-7618-4D05-8E68-13BB48673F9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{562C48D7-A87A-4A2B-B4CA-214A8E448A8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{562C48D7-A87A-4A2B-B4CA-214A8E448A8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{562C48D7-A87A-4A2B-B4CA-214A8E448A8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{562C48D7-A87A-4A2B-B4CA-214A8E448A8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50A8B42A-A3ED-4FF8-8C81-F5C6CA7C903E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50A8B42A-A3ED-4FF8-8C81-F5C6CA7C903E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50A8B42A-A3ED-4FF8-8C81-F5C6CA7C903E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50A8B42A-A3ED-4FF8-8C81-F5C6CA7C903E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24346E2C-AE7C-4369-BB71-7E75A988816B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24346E2C-AE7C-4369-BB71-7E75A988816B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24346E2C-AE7C-4369-BB71-7E75A988816B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24346E2C-AE7C-4369-BB71-7E75A988816B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89E1CDF9-BBAB-43C1-AC32-328DA6619FF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89E1CDF9-BBAB-43C1-AC32-328DA6619FF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89E1CDF9-BBAB-43C1-AC32-328DA6619FF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89E1CDF9-BBAB-43C1-AC32-328DA6619FF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C174FCE-2E8D-43C6-BED6-DAE0182F96FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C174FCE-2E8D-43C6-BED6-DAE0182F96FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C174FCE-2E8D-43C6-BED6-DAE0182F96FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C174FCE-2E8D-43C6-BED6-DAE0182F96FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{616AA45F-BBAB-4957-A777-92C6D1B79953}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{616AA45F-BBAB-4957-A777-92C6D1B79953}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{616AA45F-BBAB-4957-A777-92C6D1B79953}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{616AA45F-BBAB-4957-A777-92C6D1B79953}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACCCEED7-A06B-47BB-90F8-78DB50C0886C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACCCEED7-A06B-47BB-90F8-78DB50C0886C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACCCEED7-A06B-47BB-90F8-78DB50C0886C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACCCEED7-A06B-47BB-90F8-78DB50C0886C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EF500FC-1452-46DF-B121-DF1D1B4D6691}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EF500FC-1452-46DF-B121-DF1D1B4D6691}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EF500FC-1452-46DF-B121-DF1D1B4D6691}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EF500FC-1452-46DF-B121-DF1D1B4D6691}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D77F2382-CDB0-424A-ADD6-ACAB7CF2EE41}
+	EndGlobalSection
+EndGlobal

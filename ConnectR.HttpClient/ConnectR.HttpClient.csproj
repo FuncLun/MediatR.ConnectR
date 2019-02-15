@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <NoWarn>NU5105</NoWarn>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\ConnectR.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>MediatR.ConnectR.HttpClient</RootNamespace>
+    <AssemblyName>MediatR.ConnectR.HttpClient</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+</Project>

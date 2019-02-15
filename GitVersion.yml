@@ -1,0 +1,16 @@
+assembly-versioning-scheme: MajorMinor
+#assembly-file-versioning-scheme requires GitVersion v4
+assembly-file-versioning-scheme: MajorMinorPatchTag
+increment: Patch
+mode: ContinuousDeployment
+branches: 
+  master:
+    tag: 'master'
+  develop:
+    tag: 'develop'
+  hotfix:
+    tag: 'hotfix.{BranchName}'
+  feature:
+    tag: 'feature.{BranchName}'
+ignore:
+  sha: []

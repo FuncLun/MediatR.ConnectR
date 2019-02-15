@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+
+    <LangVersion>latest</LangVersion>
+    <NoWarn>NU5105</NoWarn>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\ConnectR.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>MediatR.ConnectR.AspNetCore.Autofac</RootNamespace>
+    <AssemblyName>MediatR.ConnectR.AspNetCore.Autofac</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConnectR.AspNetCore\ConnectR.AspNetCore.csproj" />
+    <ProjectReference Include="..\ConnectR.Autofac\ConnectR.Autofac.csproj" />
+  </ItemGroup>
+
+</Project>

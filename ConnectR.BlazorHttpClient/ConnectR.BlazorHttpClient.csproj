@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+
+    <LangVersion>latest</LangVersion>
+    <NoWarn>NU5105</NoWarn>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\ConnectR.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>MediatR.ConnectR.BlazorHttpClient</RootNamespace>
+    <AssemblyName>MediatR.ConnectR.BlazorHttpClient</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor" Version="0.7.0" />
+  </ItemGroup>
+
+</Project>

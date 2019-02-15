@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+
+    <LangVersion>latest</LangVersion>
+    <NoWarn>NU5105</NoWarn>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\ConnectR.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>MediatR.ConnectR</RootNamespace>
+    <AssemblyName>MediatR.ConnectR</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="6.0.0" />
+  </ItemGroup>
+
+</Project>
