@@ -14,17 +14,41 @@ namespace MediatR.ConnectR.Autofac
                 ScanningActivatorData,
                 DynamicRegistrationStyle
             >
-            RegisterClientHandlers<TAssemblyFromType>(
+            RegisterClientRequestHandlers<TAssemblyFromType>(
                 this ContainerBuilder builder,
                 Type openGenericType
             )
             => builder.RegisterTypes(
                     typeof(TAssemblyFromType).Assembly
-                        .ScanForMediatorMessageTypes()
+                        .ScanForMediatorRequestTypes()
                         .Select(v =>
                             openGenericType
                                 .MakeGenericType(
-                                    v.MessageType,
+                                    v.RequestType,
+                                    v.ResponseType
+                                )
+                        )
+                        .ToArray()
+                )
+                .AsImplementedInterfaces();
+
+        public static IRegistrationBuilder
+            <
+                object,
+                ScanningActivatorData,
+                DynamicRegistrationStyle
+            >
+            RegisterClientNotificationHandlers<TAssemblyFromType>(
+                this ContainerBuilder builder,
+                Type openGenericType
+            )
+            => builder.RegisterTypes(
+                    typeof(TAssemblyFromType).Assembly
+                        .ScanForMediatorNotificationTypes()
+                        .Select(v =>
+                            openGenericType
+                                .MakeGenericType(
+                                    v.NotificationType,
                                     v.ResponseType
                                 )
                         )

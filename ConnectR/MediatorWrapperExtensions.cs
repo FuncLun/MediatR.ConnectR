@@ -6,14 +6,14 @@ namespace MediatR.ConnectR
 {
     public static class MediatorWrapperExtensions
     {
-        public static IEnumerable<Type> MakeMediatorMessageDelegates(
+        public static IEnumerable<Type> MakeMediatorMessageWrappers(
             this IEnumerable<(Type MessageType, Type ResponseType)> types
         )
-            => types.SelectMany(t => t.MakeMediatorMessageDelegates())
+            => types.SelectMany(t => t.MakeMediatorMessageWrappers())
                 .ToList();
 
 
-        public static IEnumerable<Type> MakeMediatorMessageDelegates(
+        public static IEnumerable<Type> MakeMediatorMessageWrappers(
             this (Type MessageType, Type ResponseType) types
         )
         {

@@ -1,35 +1,40 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Autofac;
-using Autofac.Builder;
-using Autofac.Features.Scanning;
 
 namespace MediatR.ConnectR.Autofac
 {
     public static class MediatorHandlerExtensions
     {
         public static ContainerBuilder
-            RegisterAssemblyHandlers(
+            RegisterAssemblyMediatorHandlers(
                 this ContainerBuilder builder,
                 object assemblyContainingObject
             )
-            => builder.RegisterHandlers(assemblyContainingObject.GetType().Assembly);
+            => builder.RegisterAssemblyMediatorHandlers(new[] { assemblyContainingObject.GetType().Assembly });
 
         public static ContainerBuilder
-            RegisterAssemblyHandlers(
+            RegisterAssemblyMediatorHandlers(
                 this ContainerBuilder builder,
                 Type assemblyContainingType
             )
-            => builder.RegisterHandlers(assemblyContainingType.Assembly);
+            => builder.RegisterAssemblyMediatorHandlers(new[] { assemblyContainingType.Assembly });
 
         public static ContainerBuilder
-            RegisterAssemblyHandlers<TAssemblyContainingType>(
+            RegisterAssemblyMediatorHandlers<TAssemblyContainingType>(
                 this ContainerBuilder builder
             )
-            => builder.RegisterHandlers(typeof(TAssemblyContainingType).Assembly);
+            => builder.RegisterAssemblyMediatorHandlers(new[] { typeof(TAssemblyContainingType).Assembly });
 
+
+        public static ContainerBuilder RegisterAssemblyMediatorHandlers(
+            this ContainerBuilder builder,
+            IEnumerable<Assembly> assemblies
+        )
+            => builder.RegisterAssemblyMediatorHandlers(assemblies.ToArray());
 
         /// <summary>
         /// Registers concrete handlers that implement IRequestHandler&lt;,&gt; or INotificationHandler&lt;&gt;
@@ -37,7 +42,7 @@ namespace MediatR.ConnectR.Autofac
         /// <param name="builder"></param>
         /// <param name="assemblies"></param>
         /// <returns></returns>
-        public static ContainerBuilder RegisterHandlers(
+        public static ContainerBuilder RegisterAssemblyMediatorHandlers(
             this ContainerBuilder builder,
             params Assembly[] assemblies
         )
@@ -54,42 +59,5 @@ namespace MediatR.ConnectR.Autofac
 
             return builder;
         }
-
-
-        public static IRegistrationBuilder<object, ScanningActivatorData, DynamicRegistrationStyle>
-            RegisterAssemblyObjectHandlers<TAssemblyContainingType>(
-                this ContainerBuilder builder
-            )
-            => builder.RegisterMiddlewareHandlers(typeof(TAssemblyContainingType).Assembly);
-
-
-        public static IRegistrationBuilder<object, ScanningActivatorData, DynamicRegistrationStyle>
-            RegisterMiddlewareHandlers(
-                this ContainerBuilder builder,
-                params Assembly[] assemblies
-            )
-            => builder.RegisterTypes(
-                    assemblies.ScanForMediatorMessageTypes()
-                        .Select(v => v.MessageType)
-                        .ToArray()
-                    );
-
-
-        public static IRegistrationBuilder<object, ScanningActivatorData, DynamicRegistrationStyle>
-            RegisterNewGeneric(
-                this ContainerBuilder builder,
-                Type openHandlerType,
-                IEnumerable<(Type RequestType, Type IRequestType)> requestTypes
-            )
-            => builder.RegisterTypes(
-                requestTypes
-                    .Select(tuple =>
-                        openHandlerType.MakeGenericType(
-                            tuple.RequestType,
-                            tuple.IRequestType.GetGenericArguments()[0]
-                        )
-                    )
-                    .ToArray()
-            );
     }
 }

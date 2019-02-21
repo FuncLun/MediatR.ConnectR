@@ -21,9 +21,8 @@ namespace MediatR.ConnectR.AspNetCore
 
             builder.RegisterModule<MediatorModule>();
             builder.RegisterModule<MediatorMiddlewareModule>();
-            builder.RegisterAssemblyHandlers(this);
-            builder.RegisterMediatorWrappers(this);
-            builder.RegisterMediatorRegistry<MediatorRegistry>();
+            builder.RegisterAssemblyMediatorHandlers(this);
+            builder.RegisterMediatorRequestWrappers(this);
 
             builder.Register<RequestDelegate>(ctx => _ => throw new Exception("Should not execute RequestDelegate"));
 

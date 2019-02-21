@@ -36,7 +36,7 @@ namespace MediatR.ConnectR.HttpClient.Autofac
                 Uri baseAddress,
                 Type openGenericType = null
             )
-            => builder.RegisterClientHandlers<TAssemblyFromType>(openGenericType ?? typeof(HttpClientHandler<,>))
+            => builder.RegisterClientRequestHandlers<TAssemblyFromType>(openGenericType ?? typeof(HttpClientHandler<,>))
                 .WithParameter(
                     TypedParameter.From(
                         new Http.HttpClient()

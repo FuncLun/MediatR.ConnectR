@@ -14,40 +14,44 @@ namespace MediatR.ConnectR.HttpClient
     {
         public HttpClientHandler(
             Http.HttpClient httpClient,
-            Uri uriBase = null
+            Uri baseUri = null,
+            Uri relativePath = null,
+            JsonSerializerSettings jsonSerializerSettings = null
         )
         {
             HttpClient = httpClient;
-            UriBase = uriBase;
+            BaseUri = baseUri;
+            RelativePath = relativePath;
+            JsonSerializerSettings = jsonSerializerSettings;
         }
 
-        public Http.HttpClient HttpClient { get; }
+        internal Http.HttpClient HttpClient { get; }
 
-        public Uri UriBase { get; }
+        private Uri BaseUri { get; }
 
-        public static Uri RelativePath { get; }
-            = new Uri(typeof(TRequest).FullName
-                          ?.Replace('.', '/')
-                          .Replace('+', '.')
-                      ?? "",
+        private Uri RelativePath { get; }
+
+        private JsonSerializerSettings JsonSerializerSettings { get; }
+
+        private static Uri DefaultRelativePath { get; }
+            = new Uri(
+                typeof(TRequest).MessageRelativePath() ?? "",
                 UriKind.Relative
             );
 
-        public Uri OverridePath { get; set; }
-
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken)
         {
-            var requestString = JsonConvert.SerializeObject(request);
+            var requestString = JsonConvert.SerializeObject(request, JsonSerializerSettings);
 
-            var uri = (UriBase == null)
-                ? OverridePath ?? RelativePath
-                : new Uri(UriBase, OverridePath ?? RelativePath);
+            var uri = (BaseUri == null)
+                ? RelativePath ?? DefaultRelativePath
+                : new Uri(BaseUri, RelativePath ?? DefaultRelativePath);
 
             using (var requestContent = new StringContent(requestString, Encoding.UTF8, "applicaiton/json"))
             using (var response = await HttpClient.PostAsync(uri, requestContent, cancellationToken))
             {
                 var responseString = await response.Content.ReadAsStringAsync();
-                var responseObject = JsonConvert.DeserializeObject<TResponse>(responseString);
+                var responseObject = JsonConvert.DeserializeObject<TResponse>(responseString, JsonSerializerSettings);
 
                 return responseObject;
             }

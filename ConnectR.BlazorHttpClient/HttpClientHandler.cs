@@ -25,10 +25,8 @@ namespace MediatR.ConnectR.BlazorHttpClient
         public Uri UriBase { get; }
 
         public static Uri RelativePath { get; }
-            = new Uri(typeof(TRequest).FullName
-                          ?.Replace('.', '/')
-                          .Replace('+', '.')
-                      ?? "",
+            = new Uri(
+                typeof(TRequest).MessageRelativePath() ?? "",
                 UriKind.Relative
             );
 

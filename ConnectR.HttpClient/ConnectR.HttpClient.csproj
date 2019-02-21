@@ -2,17 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>MediatR.ConnectR.HttpClient</AssemblyName>
+    <RootNamespace>MediatR.ConnectR.HttpClient</RootNamespace>
     <LangVersion>latest</LangVersion>
     <NoWarn>NU5105</NoWarn>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\ConnectR.snk</AssemblyOriginatorKeyFile>
-    <RootNamespace>MediatR.ConnectR.HttpClient</RootNamespace>
-    <AssemblyName>MediatR.ConnectR.HttpClient</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="6.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.11.0.8083">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

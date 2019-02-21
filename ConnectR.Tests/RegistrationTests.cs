@@ -16,7 +16,7 @@ namespace MediatR.ConnectR
             var builder = new ContainerBuilder();
 
             builder.RegisterModule<MediatorModule>();
-            builder.RegisterAssemblyHandlers<RegistrationTests>();
+            builder.RegisterAssemblyMediatorHandlers<RegistrationTests>();
 
             using (var scope = builder.Build())
             {

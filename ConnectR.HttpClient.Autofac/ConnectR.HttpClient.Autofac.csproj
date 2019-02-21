@@ -2,17 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-
+    <AssemblyName>MediatR.ConnectR.HttpClient.Autofac</AssemblyName>
+    <RootNamespace>MediatR.ConnectR.HttpClient.Autofac</RootNamespace>
     <LangVersion>latest</LangVersion>
     <NoWarn>NU5105</NoWarn>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\ConnectR.snk</AssemblyOriginatorKeyFile>
-    <RootNamespace>MediatR.ConnectR.HttpClient.Autofac</RootNamespace>
-    <AssemblyName>MediatR.ConnectR.HttpClient.Autofac</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.0" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.11.0.8083">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

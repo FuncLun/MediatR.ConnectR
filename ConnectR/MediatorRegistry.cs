@@ -7,50 +7,39 @@ namespace MediatR.ConnectR
 {
     public class MediatorRegistry : IMediatorRegistry
     {
-        protected IReadOnlyDictionary<string, Type> CaseSensitive { get; set; }
-            = new ReadOnlyDictionary<string, Type>(
-                new Dictionary<string, Type>()
-            );
-
-        protected IReadOnlyDictionary<string, Type> CaseInsensitive { get; set; }
-            = new ReadOnlyDictionary<string, Type>(
-                new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase)
-            );
-
-        public void LoadTypes(IEnumerable<Type> delegateTypes)
+        public MediatorRegistry(
+            IEnumerable<Type> wrapperTypes
+        )
         {
-            var filteredTypes = delegateTypes
-                .Select(t => (DelegateType: t, Path: GetPath(t)))
-                .Where(v => !string.IsNullOrWhiteSpace(v.Path))
+            var filteredTypes = wrapperTypes
+                .Select(t => (
+                    WrapperType: t,
+                    RelativePath: t.GetGenericArguments()
+                        .First()
+                        .MessageRelativePath()
+                ))
                 .ToList();
-
 
             var ci = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
             filteredTypes
-                .ForEach(v => ci[v.Path] = v.DelegateType);
+                .ForEach(v => ci[v.RelativePath] = v.WrapperType);
             CaseInsensitive = new ReadOnlyDictionary<string, Type>(ci);
 
-
             var cs = new Dictionary<string, Type>();
-            filteredTypes.GroupBy(v => v.Path, StringComparer.Ordinal)
+            filteredTypes.GroupBy(v => v.RelativePath, StringComparer.Ordinal)
                 .Where(grp => grp.Count() > 1)
                 .SelectMany(grp => grp)
                 .ToList()
-                .ForEach(v => cs[v.Path] = v.DelegateType);
+                .ForEach(v => cs[v.RelativePath] = v.WrapperType);
             CaseSensitive = new ReadOnlyDictionary<string, Type>(cs);
+
         }
 
+        protected IReadOnlyDictionary<string, Type> CaseSensitive { get; }
 
-        public virtual string GetPath(Type delegateType)
-            => delegateType
-                   .GenericTypeArguments
-                   .FirstOrDefault()
-                   ?.FullName
-                   ?.Replace('.', '/')
-                   .Replace('+', '.')
-               ?? "";
+        protected IReadOnlyDictionary<string, Type> CaseInsensitive { get; }
 
-        public Type FindDelegateType(string path)
+        public Type FindWrapperType(string path)
         {
             var key = string.Join(
                 "/",
@@ -58,10 +47,10 @@ namespace MediatR.ConnectR
                     .Where(s => !string.IsNullOrEmpty(s))
             );
 
-            if (!CaseInsensitive.TryGetValue(key, out var delegateType))
-                CaseSensitive.TryGetValue(key, out delegateType);
+            if (!CaseInsensitive.TryGetValue(key, out var wrapperType))
+                CaseSensitive.TryGetValue(key, out wrapperType);
 
-            return delegateType;
+            return wrapperType;
         }
     }
 }

@@ -2,17 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-
+    <AssemblyName>MediatR.ConnectR</AssemblyName>
+    <RootNamespace>MediatR.ConnectR</RootNamespace>
     <LangVersion>latest</LangVersion>
     <NoWarn>NU5105</NoWarn>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\ConnectR.snk</AssemblyOriginatorKeyFile>
-    <RootNamespace>MediatR.ConnectR</RootNamespace>
-    <AssemblyName>MediatR.ConnectR</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="6.0.0" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.11.0.8083">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

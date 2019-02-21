@@ -25,10 +25,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectR.Tests", "ConnectR.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution ITems", "_Solution ITems", "{8737698F-5D9F-4D4B-8BB9-81A231FE346C}"
 	ProjectSection(SolutionItems) = preProject
+		ConnectR.pub.snk = ConnectR.pub.snk
+		ConnectR.pub.txt = ConnectR.pub.txt
+		ConnectR.snk = ConnectR.snk
 		GitVersion.yml = GitVersion.yml
 		LICENSE = LICENSE
-		ConnectR.snk = ConnectR.snk
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{8E113491-110B-4405-B001-CC1F1251A687}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.AspNetCore", "Example\Example.AspNetCore\Example.AspNetCore.csproj", "{63B7E5D1-06FC-4934-94D2-A99D18732B44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,9 +82,16 @@ Global
 		{5EF500FC-1452-46DF-B121-DF1D1B4D6691}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EF500FC-1452-46DF-B121-DF1D1B4D6691}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EF500FC-1452-46DF-B121-DF1D1B4D6691}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63B7E5D1-06FC-4934-94D2-A99D18732B44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63B7E5D1-06FC-4934-94D2-A99D18732B44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63B7E5D1-06FC-4934-94D2-A99D18732B44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63B7E5D1-06FC-4934-94D2-A99D18732B44}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{63B7E5D1-06FC-4934-94D2-A99D18732B44} = {8E113491-110B-4405-B001-CC1F1251A687}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D77F2382-CDB0-424A-ADD6-ACAB7CF2EE41}

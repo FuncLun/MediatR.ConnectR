@@ -25,39 +25,39 @@ namespace MediatR.ConnectR.AspNetCore
 
         public async Task Invoke(HttpContext context, ServiceFactory serviceFactory)
         {
-            var mediatorDelegateType = MediatorRegistry.FindDelegateType(context.Request.Path);
-            if (mediatorDelegateType is null)
+            var mediatorWrapperType = MediatorRegistry.FindWrapperType(context.Request.Path);
+            if (mediatorWrapperType is null)
             {
                 await Next.Invoke(context);
                 return;
             }
 
-            var mediatorDelegate = TryFindDelegate(context, serviceFactory);
-            if (mediatorDelegate is null)
+            var mediatorWrapper = TryFindWrapper(context, serviceFactory);
+            if (mediatorWrapper is null)
             {
                 await Next.Invoke(context);
                 return;
             }
 
-            var requestObject = await DeserializeRequest(context.Request, mediatorDelegate.MessageType);
+            var requestObject = await DeserializeRequest(context.Request, mediatorWrapper.MessageType);
             if (requestObject is null)
             {
                 await Next.Invoke(context);
                 return;
             }
 
-            var responseObject = await TryInvoke(context, requestObject, mediatorDelegate);
+            var responseObject = await TryInvoke(context, requestObject, mediatorWrapper);
             await SerializeResponse(context.Response, responseObject);
         }
 
-        public virtual IMediatorWrapper TryFindDelegate(HttpContext context, ServiceFactory serviceFactory)
+        public virtual IMediatorWrapper TryFindWrapper(HttpContext context, ServiceFactory serviceFactory)
         {
             try
             {
-                var mediatorDelegateType = MediatorRegistry.FindDelegateType(context.Request.Path);
+                var mediatorWrapperType = MediatorRegistry.FindWrapperType(context.Request.Path);
 
-                if (!(mediatorDelegateType is null))
-                    return serviceFactory(mediatorDelegateType) as IMediatorWrapper;
+                if (!(mediatorWrapperType is null))
+                    return serviceFactory(mediatorWrapperType) as IMediatorWrapper;
             }
             catch (Exception ex)
             {
@@ -86,8 +86,13 @@ namespace MediatR.ConnectR.AspNetCore
             {
                 case "POST":
                     using (var sr = new StreamReader(httpRequest.Body))
-                    using (var jr = new JsonTextReader(sr))
-                        return await JObject.LoadAsync(jr);
+                    {
+                        if (sr.EndOfStream)
+                            return new JObject();
+
+                        using (var jr = new JsonTextReader(sr))
+                            return await JObject.LoadAsync(jr);
+                    }
 
                 case "GET":
                     return new JObject();
@@ -124,12 +129,12 @@ namespace MediatR.ConnectR.AspNetCore
         public virtual async Task<object> TryInvoke(
             HttpContext context,
             object requestObject,
-            IMediatorWrapper mediatorDelegate
+            IMediatorWrapper mediatorWrapper
             )
         {
             try
             {
-                return await mediatorDelegate.Invoke(requestObject, context.RequestAborted);
+                return await mediatorWrapper.Invoke(requestObject, context.RequestAborted);
             }
             catch (Exception ex)
             {
@@ -142,19 +147,22 @@ namespace MediatR.ConnectR.AspNetCore
             return default;
         }
 
-        public virtual Task SerializeResponse(HttpResponse httpResponse, object responseObject)
-        {
-            var js = new JsonSerializer();
+        private static readonly JsonSerializerSettings _jsonSerializerSettings
+            = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.None,
+                NullValueHandling = NullValueHandling.Ignore,
+            };
 
-            //if (resp != null && !(resp is Unit))
+        public static JsonSerializerSettings JsonSerializerSettings { get; set; }
+
+        public virtual async Task SerializeResponse(HttpResponse httpResponse, object responseObject)
+        {
             using (var sw = new StreamWriter(httpResponse.Body))
-            using (var jw = new JsonTextWriter(sw))
-                js.Serialize(jw, responseObject);
+                await sw.WriteAsync(JsonConvert.SerializeObject(responseObject, JsonSerializerSettings));
 
             httpResponse.ContentType = "Content-Type: application/json; charset=utf-8";
             httpResponse.StatusCode = 200;
-
-            return Task.CompletedTask;
         }
     }
 }
