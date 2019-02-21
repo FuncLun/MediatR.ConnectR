@@ -51,8 +51,8 @@ namespace MediatR.ConnectR.AspNetCore.Autofac
             )
             => builder.RegisterTypes(
                     assemblies
-                        .SelectMany(asm => asm.ScanForMediatorRequestTypes())
-                        .MakeMediatorMessageWrappers()
+                        .SelectRequestHandlerTypes()
+                        .MakeMediatorWrappers()
                         .ToArray()
                 )
                 .AsSelf();

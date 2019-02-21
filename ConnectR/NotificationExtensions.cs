@@ -5,25 +5,28 @@ using System.Reflection;
 
 namespace MediatR.ConnectR
 {
-    public static class MediatorNotificationExtensions
+    public static class NotificationExtensions
     {
-        public static IEnumerable<(Type NotificationType, Type ResponseType)> ScanForMediatorNotificationTypes(
+        public static IEnumerable<(Type NotificationType, Type ResponseType)> 
+            WhereIsNotification(
             this Assembly assembly
         )
             => assembly
                 .GetExportedTypes()
-                .ScanForMediatorNotificationTypes();
+                .WhereIsNotification();
 
-        public static IEnumerable<(Type NotificationType, Type ResponseType)> ScanForMediatorNotificationTypes(
+        public static IEnumerable<(Type NotificationType, Type ResponseType)> 
+            WhereIsNotification(
             this IEnumerable<Assembly> assemblies
         )
             => assemblies
                 .SelectMany(asm => asm
                     .GetExportedTypes()
-                    .ScanForMediatorNotificationTypes()
+                    .WhereIsNotification()
                 );
 
-        public static IEnumerable<(Type NotificationType, Type ResponseType)> ScanForMediatorNotificationTypes(
+        public static IEnumerable<(Type NotificationType, Type ResponseType)> 
+            WhereIsNotification(
             this IEnumerable<Type> notificationType
         )
             => notificationType

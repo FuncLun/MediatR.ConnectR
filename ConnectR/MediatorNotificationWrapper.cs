@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 
 namespace MediatR.ConnectR
 {
-    public class MediatorWrapperForNotification<TNotification> : MediatorWrapper<TNotification>
+    public class MediatorNotificationWrapper<TNotification> : MediatorWrapper<TNotification>
         where TNotification : INotification
     {
-        public MediatorWrapperForNotification(
+        public MediatorNotificationWrapper(
             IMediator mediator
         )
         {

@@ -5,28 +5,31 @@ using System.Reflection;
 
 namespace MediatR.ConnectR
 {
-    public static class MediatorRequestExtensions
+    public static class RequestExtensions
     {
-        public static IEnumerable<(Type RequestType, Type ResponseType)> ScanForMediatorRequestTypes(
+        public static IEnumerable<(Type RequestType, Type ResponseType)> 
+            WhereIsRequest(
             this Assembly assembly
         )
             => assembly
                 .GetExportedTypes()
-                .ScanForMediatorRequestTypes();
+                .WhereIsRequest();
 
-        public static IEnumerable<(Type RequestType, Type ResponseType)> ScanForMediatorRequestTypes(
+        public static IEnumerable<(Type RequestType, Type ResponseType)> 
+            WhereIsRequest(
             this IEnumerable<Assembly> assemblies
         )
             => assemblies
                 .SelectMany(asm => asm
                     .GetExportedTypes()
-                    .ScanForMediatorRequestTypes()
+                    .WhereIsRequest()
                 );
 
-        public static IEnumerable<(Type RequestType, Type ResponseType)> ScanForMediatorRequestTypes(
-            this IEnumerable<Type> messageType
+        public static IEnumerable<(Type RequestType, Type ResponseType)> 
+            WhereIsRequest(
+            this IEnumerable<Type> type
         )
-            => messageType
+            => type
                 .SelectMany(t => t
                     .GetInterfaces()
                     .Where(i => i.IsGenericType)

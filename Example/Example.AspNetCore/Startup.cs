@@ -49,7 +49,7 @@ namespace Example.AspNetCore
 
             builder.RegisterAssemblyMediatorHandlers<Test1Handler>();
 
-            //builder.RegisterMediatorWrappers<Test1Query>();
+            builder.RegisterMediatorRequestWrappers<Test1Query>();
             //builder.RegisterMediatorRegistry<MediatorRegistry>();
         }
 

@@ -20,7 +20,7 @@ namespace MediatR.ConnectR.Autofac
             )
             => builder.RegisterTypes(
                     typeof(TAssemblyFromType).Assembly
-                        .ScanForMediatorRequestTypes()
+                        .WhereIsRequest()
                         .Select(v =>
                             openGenericType
                                 .MakeGenericType(
@@ -44,7 +44,7 @@ namespace MediatR.ConnectR.Autofac
             )
             => builder.RegisterTypes(
                     typeof(TAssemblyFromType).Assembly
-                        .ScanForMediatorNotificationTypes()
+                        .WhereIsNotification()
                         .Select(v =>
                             openGenericType
                                 .MakeGenericType(

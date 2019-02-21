@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 
 namespace MediatR.ConnectR
 {
-    public class MediatorWrapperForRequest<TRequest, TResponse> : MediatorWrapper<TRequest>
+    public class MediatorRequestWrapper<TRequest, TResponse> : MediatorWrapper<TRequest>
         where TRequest : IRequest<TResponse>
     {
-        public MediatorWrapperForRequest(
+        public MediatorRequestWrapper(
             IMediator mediator
         )
         {

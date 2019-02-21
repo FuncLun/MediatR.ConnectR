@@ -6,27 +6,35 @@ namespace MediatR.ConnectR
 {
     public static class MediatorWrapperExtensions
     {
-        public static IEnumerable<Type> MakeMediatorMessageWrappers(
-            this IEnumerable<(Type MessageType, Type ResponseType)> types
+        public static IEnumerable<Type> WhereIsMediatorWrapper(
+            this IEnumerable<Type> types
+        ) => types
+            .Where(t => t.IsClosedTypeOf(typeof(MediatorWrapper<>)));
+
+        public static IEnumerable<Type> MakeMediatorWrappers(
+            this IEnumerable<(Type HandlerType, Type HandlerInterface)> types
         )
-            => types.SelectMany(t => t.MakeMediatorMessageWrappers())
-                .ToList();
+            => types.SelectMany(t => t.MakeMediatorWrappers());
 
-
-        public static IEnumerable<Type> MakeMediatorMessageWrappers(
-            this (Type MessageType, Type ResponseType) types
+        public static IEnumerable<Type> MakeMediatorWrappers(
+            this (Type HandlerType, Type HandlerInterface) types
         )
         {
-            var interfaces = types.MessageType.GetInterfaces();
-            if (interfaces.Any(i => i.IsClosedTypeOf(typeof(IRequest<>))))
+            if (types.HandlerInterface.IsClosedTypeOf(typeof(IRequestHandler<,>)))
                 yield return
-                    typeof(MediatorWrapperForRequest<,>)
-                        .MakeGenericType(types.MessageType, types.ResponseType);
+                    typeof(MediatorRequestWrapper<,>)
+                        .MakeGenericType(
+                            types.HandlerInterface.GenericTypeArguments[0],
+                            types.HandlerInterface.GenericTypeArguments[1]
+                            );
 
-            if (interfaces.Any(i => i == typeof(INotification)))
+            if (types.HandlerInterface.IsClosedTypeOf(typeof(INotificationHandler<>)))
                 yield return
-                    typeof(MediatorWrapperForNotification<>)
-                        .MakeGenericType(types.MessageType);
+                    typeof(MediatorNotificationWrapper<>)
+                        .MakeGenericType(
+                            types.HandlerInterface.GenericTypeArguments[0],
+                            typeof(Unit)
+                            );
         }
     }
 }

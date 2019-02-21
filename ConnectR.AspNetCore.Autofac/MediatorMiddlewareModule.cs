@@ -21,7 +21,7 @@ namespace MediatR.ConnectR.AspNetCore.Autofac
                             .SelectMany(r => r.Services)
                             .OfType<TypedService>()
                             .Select(ts => ts.ServiceType)
-                            .Where(t => t.IsClosedTypeOf(typeof(MediatorWrapper<>)))
+                            .WhereIsMediatorWrapper()
                             .ToList()
                     )
                 )
