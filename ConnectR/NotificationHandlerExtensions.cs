@@ -8,25 +8,25 @@ namespace MediatR.ConnectR
     public static class NotificationHandlerExtensions
     {
         public static IEnumerable<(Type NotificationType, Type ResponseType)>
-            WhereIsNotificationHandler(
+            SelectNotificationHandlerTypes(
             this Assembly assembly
         )
             => assembly
                 .GetTypes()
-                .WhereIsNotificationHandler();
+                .SelectNotificationHandlerTypes();
 
         public static IEnumerable<(Type NotificationType, Type ResponseType)>
-            WhereIsNotificationHandler(
+            SelectNotificationHandlerTypes(
             this IEnumerable<Assembly> assemblies
         )
             => assemblies
                 .SelectMany(asm => asm
                     .GetTypes()
-                    .WhereIsNotificationHandler()
+                    .SelectNotificationHandlerTypes()
                 );
 
         public static IEnumerable<(Type NotificationType, Type ResponseType)>
-            WhereIsNotificationHandler(
+            SelectNotificationHandlerTypes(
             this IEnumerable<Type> type
         )
             => type

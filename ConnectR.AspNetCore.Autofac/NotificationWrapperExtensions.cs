@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using Autofac.Builder;
-using Autofac.Core;
 using Autofac.Features.Scanning;
 
 namespace MediatR.ConnectR.AspNetCore.Autofac
@@ -52,7 +51,7 @@ namespace MediatR.ConnectR.AspNetCore.Autofac
             )
             => builder.RegisterTypes(
                     assemblies
-                        .SelectMany(asm => asm.WhereIsNotification())
+                        .SelectNotificationHandlerTypes()
                         .MakeMediatorWrappers()
                         .ToArray()
                 )
