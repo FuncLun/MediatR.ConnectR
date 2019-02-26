@@ -59,10 +59,10 @@ namespace MediatR.ConnectR.AspNetCore
 
                 await middleware.Invoke(context.Object, serviceFactory);
 
-                var expected = $"{{\"Result\":\"{someData}\"}}";
+                var expected = $"{{\"result\":\"{someData}\"}}";
                 var actual = Encoding.UTF8.GetString(responseStream.ToArray());
 
-                Assert.Equal(expected, actual);
+                Assert.Equal(expected, actual, StringComparer.OrdinalIgnoreCase);
             }
         }
     }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace MediatR.ConnectR.AspNetCore
 {
@@ -35,6 +36,10 @@ namespace MediatR.ConnectR.AspNetCore
                {
                    Formatting = Formatting.None,
                    NullValueHandling = NullValueHandling.Ignore,
+                   ContractResolver = new DefaultContractResolver()
+                   {
+                       NamingStrategy = new CamelCaseNamingStrategy(),
+                   }
                });
 
         public async Task Invoke(HttpContext context, ServiceFactory serviceFactory)
@@ -178,11 +183,11 @@ namespace MediatR.ConnectR.AspNetCore
 
         public virtual async Task SerializeResponse(HttpResponse httpResponse, object responseObject)
         {
-            using (var sw = new StreamWriter(httpResponse.Body))
-                await sw.WriteAsync(JsonConvert.SerializeObject(responseObject, JsonSerializerSettings));
-
             httpResponse.ContentType = "Content-Type: application/json; charset=utf-8";
             httpResponse.StatusCode = 200;
+
+            using (var sw = new StreamWriter(httpResponse.Body))
+                await sw.WriteAsync(JsonConvert.SerializeObject(responseObject, JsonSerializerSettings));
         }
     }
 }
