@@ -141,10 +141,15 @@ namespace MediatR.ConnectR.AspNetCore
                 context.Response.StatusCode = 500;
 
                 Debug.WriteLine(ex.Message);
-                Debugger.Break();
-            }
+                //Debugger.Break();
 
-            return default;
+                return new
+                {
+                    ExceptionType = ex.GetType().FullName,
+                    ex.Message,
+                    ex.StackTrace,
+                };
+            }
         }
 
         private static readonly JsonSerializerSettings _jsonSerializerSettings
