@@ -13,15 +13,29 @@ namespace MediatR.ConnectR.AspNetCore
     {
         public MediatorMiddleware(
             RequestDelegate next,
-            IMediatorRegistry mediatorRegistry
+            IMediatorRegistry mediatorRegistry,
+            MediatorMiddlewareOptions mediatorMiddlewareOptions = null
             )
         {
             Next = next;
             MediatorRegistry = mediatorRegistry;
+            MediatorMiddlewareOptions = mediatorMiddlewareOptions;
         }
 
         private RequestDelegate Next { get; }
         private IMediatorRegistry MediatorRegistry { get; }
+        private MediatorMiddlewareOptions MediatorMiddlewareOptions { get; }
+
+        private JsonSerializerSettings _jsonSerializerSettings;
+
+        public JsonSerializerSettings JsonSerializerSettings
+            => MediatorMiddlewareOptions?.JsonSerializerSettings
+               ?? _jsonSerializerSettings
+               ?? (_jsonSerializerSettings = new JsonSerializerSettings()
+               {
+                   Formatting = Formatting.None,
+                   NullValueHandling = NullValueHandling.Ignore,
+               });
 
         public async Task Invoke(HttpContext context, ServiceFactory serviceFactory)
         {
@@ -141,25 +155,26 @@ namespace MediatR.ConnectR.AspNetCore
                 context.Response.StatusCode = 500;
 
                 Debug.WriteLine(ex.Message);
-                //Debugger.Break();
 
-                return new
-                {
-                    ExceptionType = ex.GetType().FullName,
-                    ex.Message,
-                    ex.StackTrace,
-                };
+                if (MediatorMiddlewareOptions?.BreakOnException == true && Debugger.IsAttached)
+                    Debugger.Break();
+
+                if (MediatorMiddlewareOptions?.ReturnExceptionMessage != true)
+                    return default;
+
+                return (MediatorMiddlewareOptions.ReturnExceptionDetails)
+                    ? (object)new
+                    {
+                        ExceptionType = ex.GetType().FullName,
+                        ex.Message,
+                        ex.StackTrace,
+                    }
+                    : new
+                    {
+                        ex.Message,
+                    };
             }
         }
-
-        private static readonly JsonSerializerSettings _jsonSerializerSettings
-            = new JsonSerializerSettings()
-            {
-                Formatting = Formatting.None,
-                NullValueHandling = NullValueHandling.Ignore,
-            };
-
-        public static JsonSerializerSettings JsonSerializerSettings { get; set; }
 
         public virtual async Task SerializeResponse(HttpResponse httpResponse, object responseObject)
         {
