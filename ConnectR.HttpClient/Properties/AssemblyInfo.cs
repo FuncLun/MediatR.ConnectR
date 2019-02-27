@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo(
     "MediatR.ConnectR.HttpClient.Tests, " +
@@ -9,7 +8,3 @@ using System.Runtime.CompilerServices;
     "ba829870a4a9ebdf3e8f626e207886be5adbd7ebdd9727b670c5b6f938b99f0034086e71140be3" +
     "74c34e6eea211fed7ae1fe55885f31c0d7edfce4d20d4f0bfed070926d02110e11f9ee13c6cf94" +
     "293115d1")]
-
-[assembly: AssemblyVersion("0.1.0.0")]
-[assembly: AssemblyFileVersion("0.1.0.0")]
-[assembly: AssemblyInformationalVersion("0.1.0")]
