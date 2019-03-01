@@ -8,6 +8,7 @@ using MediatR.ConnectR.Autofac;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Moq;
+using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace MediatR.ConnectR.AspNetCore
@@ -63,6 +64,41 @@ namespace MediatR.ConnectR.AspNetCore
                 var actual = Encoding.UTF8.GetString(responseStream.ToArray());
 
                 Assert.Equal(expected, actual, StringComparer.OrdinalIgnoreCase);
+            }
+        }
+
+        [Fact]
+        public async Task DeserializeBody_Json_Is_CamelCase()
+        {
+            var someData = "Some Data";
+            var bytes = Encoding.UTF8.GetBytes($"{{\"Data\":\"{someData}\"}}");
+
+            using (var stream = new MemoryStream(bytes))
+            {
+                var middlewareMock = new Mock<MediatorMiddleware>(MockBehavior.Strict, null, null, null);
+                var httpContext = new DefaultHttpContext();
+                var httpRequest = httpContext.Request;
+                httpRequest.Method = "POST";
+                httpRequest.QueryString = new QueryString($"?Data2={someData}");
+                httpRequest.Body = stream;
+
+                var requestType = typeof(TestRequest);
+
+                middlewareMock.Setup(m => m.DeserializeRequest(httpRequest, requestType))
+                    .CallBase();
+                middlewareMock.Setup(m => m.DeserializeBody(httpRequest))
+                    .CallBase();
+                middlewareMock.Setup(m => m.DeserializeQueryString(httpRequest, It.IsAny<JObject>()))
+                    .CallBase();
+
+                var requestObject = await middlewareMock.Object.DeserializeRequest(httpRequest, requestType);
+
+                Assert.IsType<TestRequest>(requestObject);
+
+                var request = (TestRequest)requestObject;
+
+                Assert.Equal(someData, request.Data);
+                Assert.Equal(someData, request.Data2);
             }
         }
     }

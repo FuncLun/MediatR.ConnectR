@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -159,25 +160,13 @@ namespace MediatR.ConnectR.AspNetCore
             {
                 context.Response.StatusCode = 500;
 
-                Debug.WriteLine(ex.Message);
-
                 if (MediatorMiddlewareOptions?.BreakOnException == true && Debugger.IsAttached)
                     Debugger.Break();
 
                 if (MediatorMiddlewareOptions?.ReturnExceptionMessage != true)
                     return default;
 
-                return (MediatorMiddlewareOptions.ReturnExceptionDetails)
-                    ? (object)new
-                    {
-                        ExceptionType = ex.GetType().FullName,
-                        ex.Message,
-                        ex.StackTrace,
-                    }
-                    : new
-                    {
-                        ex.Message,
-                    };
+                return new ExceptionDetail(ex, MediatorMiddlewareOptions.ReturnExceptionDetails);
             }
         }
 

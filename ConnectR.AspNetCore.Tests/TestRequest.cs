@@ -6,6 +6,7 @@ namespace MediatR.ConnectR.AspNetCore
     public class TestRequest : IRequest<TestResponse>
     {
         public string Data { get; set; }
+        public string Data2 { get; set; }
     }
 
     public class TestResponse
