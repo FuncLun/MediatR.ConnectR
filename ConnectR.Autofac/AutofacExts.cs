@@ -14,5 +14,7 @@ namespace MediatR.ConnectR.Autofac
             )
             where TReflectionActivatorData : ReflectionActivatorData
             => registration.WithParameters(parameters.AsEnumerable());
+
+        
     }
 }

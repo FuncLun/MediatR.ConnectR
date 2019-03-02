@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
 using MediatR.Pipeline;
 
 namespace MediatR.ConnectR.Autofac
@@ -19,6 +20,9 @@ namespace MediatR.ConnectR.Autofac
 
             builder.RegisterGeneric(typeof(RequestPreProcessorBehavior<,>))
                 .As(typeof(IPipelineBehavior<,>));
+
+            //builder.RegisterTypes(new Type[]{})
+            //    .AsClosedTypesOf()
 
             builder.Register<ServiceFactory>(c =>
             {

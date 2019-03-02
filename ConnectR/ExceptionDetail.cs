@@ -14,24 +14,19 @@ namespace MediatR.ConnectR
 
             ExceptionType = exception.GetType().FullName;
             StackTrace = exception.StackTrace;
-            if (exception is AggregateException aggregateException)
-            {
-                InnerExceptionDetails = aggregateException
+            if (!(exception.InnerException is null))
+                InnerExceptionDetail = new ExceptionDetail(exception.InnerException, true);
+
+            if (exception is AggregateException aggregate)
+                AggregateExceptionDetails = aggregate
                     .InnerExceptions
                     .Select(ae => new ExceptionDetail(ae, true))
                     .ToList();
-            }
-            else if (!(exception.InnerException is null))
-            {
-                InnerExceptionDetails = new[]
-                {
-                    new ExceptionDetail(exception.InnerException, true),
-                };
-            }
         }
         public string Message { get; }
         public string ExceptionType { get; }
         public string StackTrace { get; }
-        public IEnumerable<ExceptionDetail> InnerExceptionDetails { get; }
+        public ExceptionDetail InnerExceptionDetail { get; }
+        public IEnumerable<ExceptionDetail> AggregateExceptionDetails { get; }
     }
 }

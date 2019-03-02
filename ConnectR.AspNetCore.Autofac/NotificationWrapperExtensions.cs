@@ -51,7 +51,7 @@ namespace MediatR.ConnectR.AspNetCore.Autofac
             )
             => builder.RegisterTypes(
                     assemblies
-                        .SelectNotificationHandlerTypes()
+                        .SelectNotificationHandlerTypeInfos()
                         .MakeMediatorWrappers()
                         .ToArray()
                 )

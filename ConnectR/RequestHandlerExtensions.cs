@@ -7,7 +7,7 @@ namespace MediatR.ConnectR
 {
     public static class RequestHandlerExtensions
     {
-        public static IEnumerable<(Type HandlerType, Type HandlerInterface)>
+        public static IEnumerable<RequestHandlerTypeInfo>
             SelectRequestHandlerTypes(
                 this Assembly assembly
             )
@@ -15,38 +15,27 @@ namespace MediatR.ConnectR
                 .GetTypes()
                 .SelectRequestHandlerTypes();
 
-        public static IEnumerable<(Type HandlerType, Type HandlerInterface)>
+        public static IEnumerable<RequestHandlerTypeInfo>
             SelectRequestHandlerTypes(
                 this IEnumerable<Assembly> assemblies
             )
             => assemblies
                 .SelectMany(asm => asm
                     .GetTypes()
-                    .SelectRequestHandlerTypes()
+                    .SelectMany(RequestHandlerTypeInfo.FromHandlerType)
                 );
 
-        public static IEnumerable<(Type HandlerType, Type HandlerInterface)>
+        public static IEnumerable<RequestHandlerTypeInfo>
             SelectRequestHandlerTypes(
-                this IEnumerable<Type> types
+                this IEnumerable<Type> requestHandlerTypes
             )
-            => types
-                .SelectMany(t => t
-                    .GetInterfaces()
-                    .Where(i => i.IsGenericType)
-                    .Where(i => i.IsClosedTypeOf(typeof(IRequestHandler<,>)))
-                    .Select(i => (HandlerType: t, HandlerInterface: i))
-                );
-        //.Select(t =>
-        //{
-        //    var requestResponseTypes = t.HandlerInterface
-        //        .GenericTypeArguments;
+            => requestHandlerTypes.SelectMany(RequestHandlerTypeInfo.FromHandlerType);
 
-        //    return (
-        //        t.HandlerType,
-        //        t.HandlerInterface,
-        //        RequestType: requestResponseTypes[0],
-        //        ResponseType: requestResponseTypes[1]
-        //    );
-        //});
+
+        public static IEnumerable<RequestTypeInfo>
+            SelectRequestTypes(
+                this IEnumerable<Type> requestTypes
+            )
+            => requestTypes.SelectMany(RequestTypeInfo.FromRequestType);
     }
 }

@@ -12,29 +12,33 @@ namespace MediatR.ConnectR
             .Where(t => t.IsClosedTypeOf(typeof(MediatorWrapper<>)));
 
         public static IEnumerable<Type> MakeMediatorWrappers(
-            this IEnumerable<(Type HandlerType, Type HandlerInterface)> types
+            this IEnumerable<RequestHandlerTypeInfo> typeInfos
         )
-            => types.SelectMany(t => t.MakeMediatorWrappers());
+            => typeInfos.SelectMany(t => t.MakeMediatorWrappers());
 
         public static IEnumerable<Type> MakeMediatorWrappers(
-            this (Type HandlerType, Type HandlerInterface) types
+            this RequestHandlerTypeInfo typeInfo
         )
-        {
-            if (types.HandlerInterface.IsClosedTypeOf(typeof(IRequestHandler<,>)))
-                yield return
+            => typeInfo.RequestTypeInfo
+                .Select(rti =>
                     typeof(MediatorRequestWrapper<,>)
                         .MakeGenericType(
-                            types.HandlerInterface.GenericTypeArguments[0],
-                            types.HandlerInterface.GenericTypeArguments[1]
-                            );
+                            rti.RequestType,
+                            rti.ResponseType)
+                );
 
-            if (types.HandlerInterface.IsClosedTypeOf(typeof(INotificationHandler<>)))
-                yield return
+        public static IEnumerable<Type> MakeMediatorWrappers(
+            this IEnumerable<NotificationHandlerTypeInfo> typeInfos
+        )
+            => typeInfos.SelectMany(t => t.MakeMediatorWrappers());
+
+        public static IEnumerable<Type> MakeMediatorWrappers(
+            this NotificationHandlerTypeInfo typeInfo
+        )
+            => typeInfo.NotificationTypeInfo
+                .Select(nti =>
                     typeof(MediatorNotificationWrapper<>)
-                        .MakeGenericType(
-                            types.HandlerInterface.GenericTypeArguments[0],
-                            typeof(Unit)
-                            );
-        }
+                        .MakeGenericType(nti.NotificationType)
+                );
     }
 }

@@ -7,39 +7,28 @@ namespace MediatR.ConnectR
 {
     public static class NotificationHandlerExtensions
     {
-        public static IEnumerable<(Type NotificationType, Type ResponseType)>
-            SelectNotificationHandlerTypes(
-            this Assembly assembly
-        )
+        public static IEnumerable<NotificationHandlerTypeInfo>
+            SelectNotificationHandlerTypeInfos(
+                this Assembly assembly
+            )
             => assembly
                 .GetTypes()
-                .SelectNotificationHandlerTypes();
+                .SelectNotificationHandlerTypeInfos();
 
-        public static IEnumerable<(Type NotificationType, Type ResponseType)>
-            SelectNotificationHandlerTypes(
-            this IEnumerable<Assembly> assemblies
-        )
+        public static IEnumerable<NotificationHandlerTypeInfo>
+            SelectNotificationHandlerTypeInfos(
+                this IEnumerable<Assembly> assemblies
+            )
             => assemblies
                 .SelectMany(asm => asm
                     .GetTypes()
-                    .SelectNotificationHandlerTypes()
+                    .SelectMany(NotificationHandlerTypeInfo.FromHandlerType)
                 );
 
-        public static IEnumerable<(Type NotificationType, Type ResponseType)>
-            SelectNotificationHandlerTypes(
-            this IEnumerable<Type> type
-        )
-            => type
-                .SelectMany(t => t
-                    .GetInterfaces()
-                    .Where(i => i.IsGenericType)
-                    .Where(i => i.IsClosedTypeOf(typeof(INotificationHandler<>)))
-                    .Select(i => (NotificationType: t, Interface: i))
-                )
-                .Select(t =>
-                (
-                    t.NotificationType,
-                    ResponseType: typeof(Unit)
-                ));
+        public static IEnumerable<NotificationHandlerTypeInfo>
+            SelectNotificationHandlerTypeInfos(
+                this IEnumerable<Type> notificationHandlerType
+            )
+            => notificationHandlerType.SelectMany(NotificationHandlerTypeInfo.FromHandlerType);
     }
 }

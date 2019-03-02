@@ -21,9 +21,9 @@ namespace MediatR.ConnectR
             using (var scope = builder.Build())
             {
                 var data = "Some Data";
-                var req = new TestRequest() { Data = data };
+                var req = new Test1Request() { Data = data };
 
-                var handler = scope.Resolve<IRequestHandler<TestRequest, TestResponse>>();
+                var handler = scope.Resolve<IRequestHandler<Test1Request, Test1Response>>();
 
                 var resp = await handler.Handle(req, CancellationToken.None);
 
