@@ -21,4 +21,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ConnectR\ConnectR.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -15,15 +15,18 @@ namespace MediatR.ConnectR.HttpClient.Autofac
                 ScanningActivatorData,
                 DynamicRegistrationStyle
             >
-            RegisterHttpClientHandlers<TAssemblyFromType>(
+            RegisterHttpClientRequestHandlers<TAssemblyFromType>(
                 this ContainerBuilder builder,
-                string baseAddress,
-                Type openGenericType = null
+                Uri baseAddress
             )
-            => builder.RegisterHttpClientHandlers<TAssemblyFromType>(
-                new Uri(baseAddress),
-                openGenericType
-            );
+            => builder.RegisterClientRequestHandlers<TAssemblyFromType>(typeof(HttpClientHandler<,>))
+                .WithParameter(
+                    TypedParameter.From(
+                        new Http.HttpClient()
+                        {
+                            BaseAddress = baseAddress
+                        })
+                );
 
         public static IRegistrationBuilder
             <
@@ -31,12 +34,11 @@ namespace MediatR.ConnectR.HttpClient.Autofac
                 ScanningActivatorData,
                 DynamicRegistrationStyle
             >
-            RegisterHttpClientHandlers<TAssemblyFromType>(
+            RegisterHttpClientNotificationHandlers<TAssemblyFromType>(
                 this ContainerBuilder builder,
-                Uri baseAddress,
-                Type openGenericType = null
+                Uri baseAddress
             )
-            => builder.RegisterClientRequestHandlers<TAssemblyFromType>(openGenericType ?? typeof(HttpClientHandler<,>))
+            => builder.RegisterClientRequestHandlers<TAssemblyFromType>(typeof(HttpClientHandler<,>))
                 .WithParameter(
                     TypedParameter.From(
                         new Http.HttpClient()

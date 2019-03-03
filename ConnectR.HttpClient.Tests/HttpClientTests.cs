@@ -9,8 +9,6 @@ namespace MediatR.ConnectR.HttpClient
 {
     public class HttpClientTests
     {
-
-
         [Fact]
         public void Mediator_Resolves_HttpClient()
         {
@@ -20,7 +18,7 @@ namespace MediatR.ConnectR.HttpClient
 
             builder.RegisterModule<MediatorModule>();
 
-            builder.RegisterHttpClientHandlers<TestRequest>(expectedBaseAddress.ToString());
+            builder.RegisterHttpClientRequestHandlers<TestRequest>(expectedBaseAddress);
 
             builder.Register(c => new Http.HttpClient()
             {
