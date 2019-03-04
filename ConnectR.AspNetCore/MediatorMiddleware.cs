@@ -162,17 +162,15 @@ namespace MediatR.ConnectR.AspNetCore
                 if (MediatorMiddlewareOptions?.BreakOnException == true && Debugger.IsAttached)
                     Debugger.Break();
 
-                if (MediatorMiddlewareOptions?.ReturnExceptionMessage != true)
-                    return default;
-
-                return new ExceptionDetail(ex, MediatorMiddlewareOptions.ReturnExceptionDetails);
+                return (MediatorMiddlewareOptions?.ReturnExceptionMessage == true)
+                    ? new ExceptionDetail(ex, MediatorMiddlewareOptions.ReturnExceptionDetails)
+                    : default;
             }
         }
 
         public virtual async Task SerializeResponse(HttpResponse httpResponse, object responseObject)
         {
             httpResponse.ContentType = "Content-Type: application/json; charset=utf-8";
-            httpResponse.StatusCode = 200;
 
             using (var sw = new StreamWriter(httpResponse.Body))
                 await sw.WriteAsync(JsonConvert.SerializeObject(responseObject, JsonSerializerSettings));
