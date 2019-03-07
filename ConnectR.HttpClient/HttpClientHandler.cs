@@ -8,36 +8,46 @@ using Http = System.Net.Http;
 
 namespace MediatR.ConnectR.HttpClient
 {
+    public interface IHttpClientHandler
+    {
+        Uri BaseUri { get; set; }
+
+        JsonSerializerSettings JsonSerializerSettings { get; set; }
+
+        Uri RelativePath { get; set; }
+
+    }
+
     public class HttpClientHandler<TRequest, TResponse>
-        : IRequestHandler<TRequest, TResponse>
+        : IHttpClientHandler, IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
-        public HttpClientHandler(
-            Http.HttpClient httpClient,
-            Uri baseUri = null,
-            Uri relativePath = null,
-            JsonSerializerSettings jsonSerializerSettings = null
-        )
-        {
-            HttpClient = httpClient;
-            BaseUri = baseUri;
-            RelativePath = relativePath;
-            JsonSerializerSettings = jsonSerializerSettings;
-        }
-
-        internal Http.HttpClient HttpClient { get; }
-
-        private Uri BaseUri { get; }
-
-        private Uri RelativePath { get; }
-
-        private JsonSerializerSettings JsonSerializerSettings { get; }
-
         private static Uri DefaultRelativePath { get; }
             = new Uri(
                 typeof(TRequest).MessageRelativePath() ?? "",
                 UriKind.Relative
             );
+
+        public HttpClientHandler(
+            Http.HttpClient httpClient,
+            Uri baseUri = null,
+            JsonSerializerSettings jsonSerializerSettings = null,
+            Uri relativePath = null
+        )
+        {
+            HttpClient = httpClient;
+            BaseUri = baseUri;
+            JsonSerializerSettings = jsonSerializerSettings;
+            RelativePath = relativePath;
+        }
+
+        private Http.HttpClient HttpClient { get; }
+
+        public Uri BaseUri { get; set; }
+
+        public JsonSerializerSettings JsonSerializerSettings { get; set; }
+
+        public Uri RelativePath { get; set; }
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken)
         {
@@ -52,6 +62,8 @@ namespace MediatR.ConnectR.HttpClient
             {
                 var responseString = await response.Content.ReadAsStringAsync();
                 var responseObject = JsonConvert.DeserializeObject<TResponse>(responseString, JsonSerializerSettings);
+
+                //TODO: Throw on non success (200/300) response codes
 
                 return responseObject;
             }

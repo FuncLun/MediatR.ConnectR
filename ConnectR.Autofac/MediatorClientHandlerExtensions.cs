@@ -8,17 +8,13 @@ namespace MediatR.ConnectR.Autofac
 {
     public static class MediatorClientHandlerExtensions
     {
-        public static IRegistrationBuilder
-            <
-                object,
-                ScanningActivatorData,
-                DynamicRegistrationStyle
-            >
+        public static IRegistrationBuilder<object, ScanningActivatorData, DynamicRegistrationStyle>
             RegisterClientRequestHandlers<TAssemblyFromType>(
                 this ContainerBuilder builder,
                 Type openGenericType
             )
-            => builder.RegisterTypes(
+        {
+            return builder.RegisterTypes(
                     typeof(TAssemblyFromType).Assembly
                         .WhereIsRequest()
                         .Select(v =>
@@ -31,13 +27,9 @@ namespace MediatR.ConnectR.Autofac
                         .ToArray()
                 )
                 .AsImplementedInterfaces();
+        }
 
-        public static IRegistrationBuilder
-            <
-                object,
-                ScanningActivatorData,
-                DynamicRegistrationStyle
-            >
+        public static IRegistrationBuilder<object, ScanningActivatorData, DynamicRegistrationStyle>
             RegisterClientNotificationHandlers<TAssemblyFromType>(
                 this ContainerBuilder builder,
                 Type openGenericType

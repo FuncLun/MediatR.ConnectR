@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Autofac;
 using MediatR.ConnectR.Autofac;
 using MediatR.ConnectR.HttpClient.Autofac;
@@ -9,34 +10,77 @@ namespace MediatR.ConnectR.HttpClient
 {
     public class HttpClientTests
     {
-        [Fact]
-        public void Mediator_Resolves_HttpClient()
+        private readonly Uri _expectedBaseAddress = new Uri("http://localhost/");
+        private readonly Uri _notUsedBaseAddress = new Uri("http://NotUsed2");
+
+        public HttpClientTests()
         {
-            var expectedBaseAddress = new Uri("http://localhost/");
-            var notUsedBaseAddress = new Uri("http://NotUsed2");
-            var builder = new ContainerBuilder();
+            Builder = new ContainerBuilder();
 
-            builder.RegisterModule<MediatorModule>();
+            Builder.RegisterModule<MediatorModule>();
 
-            builder.RegisterHttpClientRequestHandlers<TestRequest>(expectedBaseAddress);
+            Builder.RegisterInstance(new TestConfig()
+                {
+                    BaseUri = _expectedBaseAddress,
+                })
+                .AsImplementedInterfaces();
 
-            builder.Register(c => new Http.HttpClient()
-            {
-                BaseAddress = notUsedBaseAddress,
-            }).SingleInstance();
+            Builder.Register(c => new Http.HttpClient()
+                {
+                    BaseAddress = _notUsedBaseAddress,
+                })
+                .SingleInstance();
 
-            builder.RegisterType(GetType()).WithParameters();
+            Builder.RegisterType(GetType()).WithParameters();
+        }
 
-            using (var scope = builder.Build())
+        private ContainerBuilder Builder { get; }
+
+        [Fact]
+        public void Mediator_NoContextExt_Resolves_HttpClient()
+        {
+            Builder.RegisterHttpClientRequestHandlers<TestRequest>(
+                (handler) => handler.BaseUri = _expectedBaseAddress
+            );
+
+            using (var scope = Builder.Build())
             {
                 var httpClient = scope.Resolve<Http.HttpClient>();
-                Assert.Equal(notUsedBaseAddress, httpClient.BaseAddress);
+                Assert.Equal(_notUsedBaseAddress, httpClient.BaseAddress);
 
                 var handler = scope.Resolve<IRequestHandler<TestRequest, TestResponse>>();
                 var typedHandler = handler as HttpClientHandler<TestRequest, TestResponse>;
 
                 Assert.NotNull(typedHandler);
-                Assert.Equal(expectedBaseAddress, typedHandler.HttpClient.BaseAddress);
+                Assert.Equal(_expectedBaseAddress, typedHandler.BaseUri);
+
+                var actual = handler
+                    .GetType()
+                    .GetGenericTypeDefinition();
+
+                var expected = typeof(HttpClientHandler<,>);
+                Assert.Equal(expected, actual);
+
+            }
+        }
+
+        [Fact]
+        public void Mediator_ConfigExt_Resolves_HttpClient()
+        {
+            Builder.RegisterHttpClientRequestHandlers<TestRequest, ITestConfig>(
+                (handler, config) => handler.BaseUri = config.BaseUri
+            );
+
+            using (var scope = Builder.Build())
+            {
+                var httpClient = scope.Resolve<Http.HttpClient>();
+                Assert.Equal(_notUsedBaseAddress, httpClient.BaseAddress);
+
+                var handler = scope.Resolve<IRequestHandler<TestRequest, TestResponse>>();
+                var typedHandler = handler as HttpClientHandler<TestRequest, TestResponse>;
+
+                Assert.NotNull(typedHandler);
+                Assert.Equal(_expectedBaseAddress, typedHandler.BaseUri);
 
                 var actual = handler
                     .GetType()
