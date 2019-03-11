@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectR.HttpClient.Tests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectR.Tests", "ConnectR.Tests\ConnectR.Tests.csproj", "{5EF500FC-1452-46DF-B121-DF1D1B4D6691}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution ITems", "_Solution ITems", "{8737698F-5D9F-4D4B-8BB9-81A231FE346C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solution Items", "{8737698F-5D9F-4D4B-8BB9-81A231FE346C}"
 	ProjectSection(SolutionItems) = preProject
 		ConnectR.pub.snk = ConnectR.pub.snk
 		ConnectR.pub.txt = ConnectR.pub.txt
