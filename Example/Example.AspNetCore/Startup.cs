@@ -48,9 +48,7 @@ namespace Example.AspNetCore
             builder.RegisterModule<MediatorMiddlewareModule>();
 
             builder.RegisterAssemblyMediatorHandlers<Test1Handler>();
-
-            builder.RegisterMediatorRequestWrappers<Test1Query>();
-            //builder.RegisterMediatorRegistry<MediatorRegistry>();
+            builder.RegisterMediatorRequestWrappers<Test1Handler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

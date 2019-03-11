@@ -13,44 +13,70 @@ namespace MediatR.ConnectR.AspNetCore.Autofac
         public static IRegistrationBuilder<object, ScanningActivatorData, DynamicRegistrationStyle>
             RegisterMediatorRequestWrappers(
                 this ContainerBuilder builder,
-                object assemblyContainingObject
+                object objectInAssemblyContainingHandler
             )
-            => builder.RegisterMediatorRequestWrappers(new[] { assemblyContainingObject.GetType().Assembly }.AsEnumerable());
+            => builder.RegisterMediatorRequestWrappers(
+                new[]
+                    {
+                        objectInAssemblyContainingHandler.GetType().Assembly
+                    }
+                    .AsEnumerable()
+            );
 
         public static IRegistrationBuilder<object, ScanningActivatorData, DynamicRegistrationStyle>
             RegisterMediatorRequestWrappers(
                 this ContainerBuilder builder,
-                Type assemblyContainingType
+                Type typeInAssemblyContainingHandler
             )
-            => builder.RegisterMediatorRequestWrappers(new[] { assemblyContainingType.Assembly }.AsEnumerable());
+            => builder.RegisterMediatorRequestWrappers(
+                new[]
+                    {
+                        typeInAssemblyContainingHandler.Assembly
+                    }
+                    .AsEnumerable()
+            );
 
         public static IRegistrationBuilder<object, ScanningActivatorData, DynamicRegistrationStyle>
-            RegisterMediatorRequestWrappers<TAssemblyContainingType>(
+            RegisterMediatorRequestWrappers<TTypeInAssemblyContainingHandler>(
                 this ContainerBuilder builder
             )
-            => builder.RegisterMediatorRequestWrappers(new[] { typeof(TAssemblyContainingType).Assembly }.AsEnumerable());
+            => builder.RegisterMediatorRequestWrappers(
+                new[]
+                    {
+                        typeof(TTypeInAssemblyContainingHandler).Assembly
+                    }
+                    .AsEnumerable()
+            );
 
         public static IRegistrationBuilder<object, ScanningActivatorData, DynamicRegistrationStyle>
             RegisterMediatorRequestWrappers(
                 this ContainerBuilder builder,
-                Assembly assembly
+                Assembly assemblyContainingHandlers
             )
-            => builder.RegisterMediatorRequestWrappers(new[] { assembly }.AsEnumerable());
+            => builder.RegisterMediatorRequestWrappers(
+                new[]
+                    {
+                        assemblyContainingHandlers
+                    }
+                    .AsEnumerable()
+            );
 
         public static IRegistrationBuilder<object, ScanningActivatorData, DynamicRegistrationStyle>
             RegisterMediatorRequestWrappers(
                 this ContainerBuilder builder,
-                params Assembly[] assemblies
+                params Assembly[] assembliesContainingHandlers
             )
-            => builder.RegisterMediatorRequestWrappers(assemblies.AsEnumerable());
+            => builder.RegisterMediatorRequestWrappers(
+                assembliesContainingHandlers.AsEnumerable()
+            );
 
         public static IRegistrationBuilder<object, ScanningActivatorData, DynamicRegistrationStyle>
             RegisterMediatorRequestWrappers(
                 this ContainerBuilder builder,
-                IEnumerable<Assembly> assemblies
+                IEnumerable<Assembly> assembliesContainingHandlers
             )
             => builder.RegisterTypes(
-                    assemblies
+                    assembliesContainingHandlers
                         .SelectRequestHandlerTypes()
                         .MakeMediatorWrappers()
                         .ToArray()
