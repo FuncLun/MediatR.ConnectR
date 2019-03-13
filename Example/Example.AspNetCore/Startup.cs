@@ -1,7 +1,5 @@
 ﻿using Autofac;
 using Example.AspNetCore.Handlers;
-using Example.AspNetCore.Requests;
-using MediatR.ConnectR;
 using MediatR.ConnectR.AspNetCore;
 using MediatR.ConnectR.AspNetCore.Autofac;
 using MediatR.ConnectR.Autofac;

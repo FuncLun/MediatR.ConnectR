@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Example.AspNetCore.Requests;
 using MediatR.ConnectR;
-using MediatR.ConnectR.AspNetCore;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 

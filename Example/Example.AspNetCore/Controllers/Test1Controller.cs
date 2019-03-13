@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Example.AspNetCore.Requests;
+﻿using Example.AspNetCore.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Example.AspNetCore.Controllers

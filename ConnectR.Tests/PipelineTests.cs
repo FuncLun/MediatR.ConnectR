@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using MediatR.ConnectR.Autofac;
 using Xunit;
-using Xunit.Sdk;
+
 // ReSharper disable UnusedVariable
 
 namespace MediatR.ConnectR

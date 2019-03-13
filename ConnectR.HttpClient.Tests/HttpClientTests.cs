@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using Autofac;
 using MediatR.ConnectR.Autofac;
 using MediatR.ConnectR.HttpClient.Autofac;
