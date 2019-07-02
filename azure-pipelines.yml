@@ -1,0 +1,186 @@
+pool:
+  vmImage: windows-2019
+  demands:
+  - msbuild
+  - visualstudio
+
+trigger:
+  branches:
+    include:
+    - master
+    - hotfix/*
+    - feature/*
+
+pr:
+  branches:
+    include:
+    - master
+
+variables:
+  - name: BuildConfiguration
+    value:
+  - name: BuildPlatform
+    value: Any CPU
+
+steps:
+- task: DotNetCoreInstaller@0
+  displayName: Install .NET Core sdk
+  inputs:
+    version: 2.2.300
+
+- task: gittools.gitversion.gitversion-task.GitVersion@4
+  displayName: GitVersion
+  inputs:
+    updateAssemblyInfo: true
+    preferBundledVersion: false
+
+- task: PowerShell@2
+  displayName: PowerShell Version Manipulation
+  inputs:
+    targetType: inline
+    pwsh: true
+    script: |
+      $BuildConfiguration = if ('$(BuildConfiguration)') { "$(BuildConfiguration)" } else { "Debug" }
+      $BuildPlatform = if ('$(BuildPlatform)') { "$(BuildPlatform)" } else { "Any CPU" }
+      $BuildPlatformNoSpace = "$($BuildPlatform.Replace(' ',''))"
+
+      $isRelease = ($env:Build_SourceBranch -eq "refs/heads/master" -And $(GitVersion.Major) -gt 0)
+      $packageVersion = if ($isRelease) { "$(GitVersion.MajorMinorPatch)" } else { "$(GitVersion.SemVer)" }
+      $tagVersion = if ($isRelease) { "$(GitVersion.MajorMinorPatch)" } else { "" }
+      $assemblyVersion = "$(GitVersion.Major).$(GitVersion.Minor).0.0"
+      $fileVersion = "$(GitVersion.MajorMinorPatch).$($($env:Build_BuildId) % 10000)"
+      $informationalVersion = "$(GitVersion.InformationalVersion)"
+
+      if ($isRelease) {
+          Write-Output "Performing 'git clean -dxf'"
+          git clean -dxf
+          if ($LastExitCode -gt 0) { exit $LastExitCode }
+          
+          Write-Output "Setting tag version to '$tagVersion'"
+      
+          git tag --points-at HEAD |
+          Where-Object { "$_" -eq "$tagVersion" } |
+          ForEach-Object {
+              Write-Output "Commit is already tagged"
+              $tagVersion = ""
+          }
+      } else {
+          Write-Output "Tagging not requested"
+      }
+      
+      Write-Host "##vso[task.setvariable variable=BuildConfiguration]$BuildConfiguration"
+      Write-Host "##vso[task.setvariable variable=BuildPlatform]$BuildPlatform"
+      Write-Host "##vso[task.setvariable variable=BuildPlatformNoSpace]$BuildPlatformNoSpace"
+      Write-Host "##vso[task.setvariable variable=TagVersion]$tagVersion"
+      Write-Host "##vso[task.setvariable variable=PackageVersion]$packageVersion"
+      Write-Host "##vso[task.setvariable variable=AssemblyVersion]$assemblyVersion"
+      Write-Host "##vso[task.setvariable variable=FileVersion]$fileVersion"
+      Write-Host "##vso[task.setvariable variable=InformationalVersion]$informationalVersion"
+      Write-Host "##vso[build.updatebuildnumber]$packageVersion"
+      Write-Host "Build Number '$packageVersion'"
+    failOnStderr: true
+
+- task: NuGetCommand@2
+  displayName: NuGet restore
+  inputs:
+    vstsFeed: /7a4ed05e-d156-4369-9d97-dbaa6ef2a186
+
+- task: VSBuild@1
+  displayName: Build
+  inputs:
+    solution: ClubReady.sln
+    msbuildArgs: >
+      /p:AssemblyVersion="$(AssemblyVersion)"
+      /p:FileVersion="$(FileVersion)"
+      /p:InformationalVersion="$(InformationalVersion)"
+      /p:RegisterForComInterop=false
+      /p:RunOctoPack=true
+      /p:OctoPackPackageVersion="$(PackageVersion)"
+      /p:OctoPackPublishPackageToFileShare="$(Build.ArtifactStagingDirectory)\.DeploymentPackages"
+      /verbosity:normal
+      /nowarn:NU1801,NU5105
+    # NU1801: IgnoreFailedSources is set to true
+    # NU5105: The package version 'X' uses SemVer 2.0.0
+    platform: $(BuildPlatform)
+    configuration: $(BuildConfiguration)
+    maximumCpuCount: true
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet test
+  inputs:
+    command: test
+    projects: '**/*.sln'
+    arguments: >
+      --no-build
+      --no-restore
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet pack
+  inputs:
+    command: pack
+    packDirectory: '$(Build.ArtifactStagingDirectory)\.GitHubFeed'
+    nobuild: true
+    versioningScheme: byEnvVar
+    versionEnvVar: PackageVersion
+    verbosityPack: Minimal
+    buildProperties: ProjectAsPackage=true
+
+- task: CopyFiles@2
+  displayName: Copy Files to Build.ArtifactStagingDirectory
+  inputs:
+    SourceFolder: $(Build.SourcesDirectory)\.bin
+    Contents: |
+      '
+      **/bin/**
+      !**/obj/**
+      !**/App_Deploy/**
+      !**/_PublishedXUnitTests/**
+      '
+    TargetFolder: $(Build.ArtifactStagingDirectory)\.bin
+  enabled: false
+
+- task: PowerShell@2
+  displayName: PowerShell UNC Authentication
+  inputs:
+    targetType: inline
+    pwsh: false
+    script: |
+      $network = new-object -ComObject WScript.Network
+      $network.MapNetworkDrive($null, '$(artifacts_Path)', $false, '$(artifacts_Username)', '$(artifacts_Password)')
+    failOnStderr: true
+  enabled: false
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish Artifact
+  inputs:
+    ArtifactName: $(Build.DefinitionName)/$(Build.BuildNumber)_$(Build.BuildId)
+    publishLocation: FilePath
+    TargetPath: $(artifacts_Path)
+    Parallel: true
+    ParallelCount: 4
+  enabled: false
+
+- task: PowerShell@2
+  displayName: PowerShell Git Tag
+  inputs:
+    targetType: inline
+    pwsh: true
+    script: |
+      If ("$(TagVersion)") {
+          Write-Output "Creating Tag '$(TagVersion)'"
+          git config user.email azure-pipelines@functionallunacy.com
+          git config user.name Azure-Pipelines
+          git tag "$(TagVersion)" -f -a -m "$(InformationalVersion)"
+      
+          Write-Output "Pushing Tag '$(TagVersion)'"
+          git -c http.extraheader="AUTHORIZATION: bearer $(system.accesstoken)" push origin "$(TagVersion)" --porcelain
+      }
+    failOnStderr: true
+  enabled: false
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet push GitHubFeed
+  inputs:
+    command: push
+    packagesToPush: $(Build.ArtifactStagingDirectory)/.ClubReadyLibraries/*.nupkg
+    publishVstsFeed: /7a4ed05e-d156-4369-9d97-dbaa6ef2a186
