@@ -4,7 +4,7 @@
     <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
     <AssemblyName>MediatR.ConnectR.HttpClient.Tests</AssemblyName>
     <RootNamespace>MediatR.ConnectR.HttpClient</RootNamespace>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <IsPackable>false</IsPackable>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\ConnectR.snk</AssemblyOriginatorKeyFile>

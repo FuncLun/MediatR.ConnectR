@@ -25,10 +25,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectR.Tests", "ConnectR.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Solution Items", ".Solution Items", "{8737698F-5D9F-4D4B-8BB9-81A231FE346C}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		ConnectR.pub.snk = ConnectR.pub.snk
 		ConnectR.pub.txt = ConnectR.pub.txt
 		ConnectR.snk = ConnectR.snk
 		GitVersion.yml = GitVersion.yml
+		global.json = global.json
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
