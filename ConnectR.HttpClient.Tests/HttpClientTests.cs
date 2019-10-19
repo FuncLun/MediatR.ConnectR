@@ -43,7 +43,7 @@ namespace MediatR.ConnectR.HttpClient
                 (handler) => handler.BaseUri = _expectedBaseAddress
             );
 
-            using (var scope = Builder.Build())
+            using var scope = Builder.Build();
             {
                 var httpClient = scope.Resolve<Http.HttpClient>();
                 Assert.Equal(_notUsedBaseAddress, httpClient.BaseAddress);
@@ -71,7 +71,7 @@ namespace MediatR.ConnectR.HttpClient
                 (handler, config) => handler.BaseUri = config.BaseUri
             );
 
-            using (var scope = Builder.Build())
+            using var scope = Builder.Build();
             {
                 var httpClient = scope.Resolve<Http.HttpClient>();
                 Assert.Equal(_notUsedBaseAddress, httpClient.BaseAddress);

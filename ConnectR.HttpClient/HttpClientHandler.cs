@@ -57,16 +57,14 @@ namespace MediatR.ConnectR.HttpClient
                 ? RelativePath ?? DefaultRelativePath
                 : new Uri(BaseUri, RelativePath ?? DefaultRelativePath);
 
-            using (var requestContent = new StringContent(requestString, Encoding.UTF8, "applicaiton/json"))
-            using (var response = await HttpClient.PostAsync(uri, requestContent, cancellationToken))
-            {
-                var responseString = await response.Content.ReadAsStringAsync();
-                var responseObject = JsonConvert.DeserializeObject<TResponse>(responseString, JsonSerializerSettings);
+            using var requestContent = new StringContent(requestString, Encoding.UTF8, "applicaiton/json");
+            using var response = await HttpClient.PostAsync(uri, requestContent, cancellationToken);
+            var responseString = await response.Content.ReadAsStringAsync();
+            var responseObject = JsonConvert.DeserializeObject<TResponse>(responseString, JsonSerializerSettings);
 
-                //TODO: Throw on non success (200/300) response codes
+            //TODO: Throw on non success (200/300) response codes
 
-                return responseObject;
-            }
+            return responseObject;
         }
     }
 }

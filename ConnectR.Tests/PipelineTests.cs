@@ -21,22 +21,20 @@ namespace MediatR.ConnectR
             builder.RegisterModule<MediatorModule>();
             builder.RegisterAssemblyMediatorHandlers<RegistrationTests>();
 
-            using (var scope = builder.Build())
-            {
-                var mediator = scope.Resolve<IMediator>();
-                var req = new Test1Request();
+            using var scope = builder.Build();
+            var mediator = scope.Resolve<IMediator>();
+            var req = new Test1Request();
 
-                var expected = await mediator.Send(req);
+            var expected = await mediator.Send(req);
 
-                var tryGet = Test1Pipeline
-                    .RequestHistory
-                    .TryGetValue(req, out var actual);
+            var tryGet = Test1Pipeline
+                .RequestHistory
+                .TryGetValue(req, out var actual);
 
-                Assert.False(tryGet);
-                Assert.NotNull(expected);
-                Assert.Null(actual);
-                Assert.NotSame(expected, actual);
-            }
+            Assert.False(tryGet);
+            Assert.NotNull(expected);
+            Assert.Null(actual);
+            Assert.NotSame(expected, actual);
         }
 
 
@@ -51,22 +49,20 @@ namespace MediatR.ConnectR
                 .AsImplementedInterfaces();
 
 
-            using (var scope = builder.Build())
-            {
-                var mediator = scope.Resolve<IMediator>();
-                var req = new Test1Request();
+            using var scope = builder.Build();
+            var mediator = scope.Resolve<IMediator>();
+            var req = new Test1Request();
 
-                var expected = await mediator.Send(req);
+            var expected = await mediator.Send(req);
 
-                var tryGet = Test1Pipeline
-                    .RequestHistory
-                    .TryGetValue(req, out var actual);
+            var tryGet = Test1Pipeline
+                .RequestHistory
+                .TryGetValue(req, out var actual);
 
-                Assert.True(tryGet);
-                Assert.NotNull(expected);
-                Assert.NotNull(actual);
-                Assert.Same(expected, actual);
-            }
+            Assert.True(tryGet);
+            Assert.NotNull(expected);
+            Assert.NotNull(actual);
+            Assert.Same(expected, actual);
         }
 
 
@@ -78,22 +74,20 @@ namespace MediatR.ConnectR
             builder.RegisterModule<MediatorModule>();
             builder.RegisterAssemblyMediatorHandlers<RegistrationTests>();
 
-            using (var scope = builder.Build())
-            {
-                var mediator = scope.Resolve<IMediator>();
-                var req = new Test1Request();
+            using var scope = builder.Build();
+            var mediator = scope.Resolve<IMediator>();
+            var req = new Test1Request();
 
-                var expected = await mediator.Send(req);
+            var expected = await mediator.Send(req);
 
-                var tryGet = TestGenericPipeline<Test1Request, Test1Response>
-                    .RequestHistory
-                    .TryGetValue(req, out var actual);
+            var tryGet = TestGenericPipeline<Test1Request, Test1Response>
+                .RequestHistory
+                .TryGetValue(req, out var actual);
 
-                Assert.False(tryGet);
-                Assert.NotNull(expected);
-                Assert.Null(actual);
-                Assert.NotSame(expected, actual);
-            }
+            Assert.False(tryGet);
+            Assert.NotNull(expected);
+            Assert.Null(actual);
+            Assert.NotSame(expected, actual);
         }
 
         [Fact]
@@ -107,22 +101,20 @@ namespace MediatR.ConnectR
                 .AsImplementedInterfaces();
 
 
-            using (var scope = builder.Build())
-            {
-                var mediator = scope.Resolve<IMediator>();
-                var req = new Test1Request();
+            using var scope = builder.Build();
+            var mediator = scope.Resolve<IMediator>();
+            var req = new Test1Request();
 
-                var expected = await mediator.Send(req);
+            var expected = await mediator.Send(req);
 
-                var tryGet = TestGenericPipeline<Test1Request, Test1Response>
-                    .RequestHistory
-                    .TryGetValue(req, out var actual);
+            var tryGet = TestGenericPipeline<Test1Request, Test1Response>
+                .RequestHistory
+                .TryGetValue(req, out var actual);
 
-                Assert.True(tryGet);
-                Assert.NotNull(expected);
-                Assert.NotNull(actual);
-                Assert.Same(expected, actual);
-            }
+            Assert.True(tryGet);
+            Assert.NotNull(expected);
+            Assert.NotNull(actual);
+            Assert.Same(expected, actual);
         }
 
         [Fact]
@@ -141,22 +133,20 @@ namespace MediatR.ConnectR
                 )
                 .AsImplementedInterfaces();
 
-            using (var scope = builder.Build())
-            {
-                var mediator = scope.Resolve<IMediator>();
-                var req = new Test1Request();
+            using var scope = builder.Build();
+            var mediator = scope.Resolve<IMediator>();
+            var req = new Test1Request();
 
-                var expected = await mediator.Send(req);
+            var expected = await mediator.Send(req);
 
-                var tryGet = TestGenericPipeline<Test1Request, Test1Response>
-                    .RequestHistory
-                    .TryGetValue(req, out var actual);
+            var tryGet = TestGenericPipeline<Test1Request, Test1Response>
+                .RequestHistory
+                .TryGetValue(req, out var actual);
 
-                Assert.False(tryGet);
-                Assert.NotNull(expected);
-                Assert.Null(actual);
-                Assert.NotSame(expected, actual);
-            }
+            Assert.False(tryGet);
+            Assert.NotNull(expected);
+            Assert.Null(actual);
+            Assert.NotSame(expected, actual);
         }
 
         [Fact]
@@ -175,22 +165,20 @@ namespace MediatR.ConnectR
                 )
                 .AsImplementedInterfaces();
 
-            using (var scope = builder.Build())
-            {
-                var mediator = scope.Resolve<IMediator>();
-                var req = new Test1Request();
+            using var scope = builder.Build();
+            var mediator = scope.Resolve<IMediator>();
+            var req = new Test1Request();
 
-                var expected = await mediator.Send(req);
+            var expected = await mediator.Send(req);
 
-                var tryGet = TestGenericPipeline<Test1Request, Test1Response>
-                    .RequestHistory
-                    .TryGetValue(req, out var actual);
+            var tryGet = TestGenericPipeline<Test1Request, Test1Response>
+                .RequestHistory
+                .TryGetValue(req, out var actual);
 
-                Assert.True(tryGet);
-                Assert.NotNull(expected);
-                Assert.NotNull(actual);
-                Assert.Same(expected, actual);
-            }
+            Assert.True(tryGet);
+            Assert.NotNull(expected);
+            Assert.NotNull(actual);
+            Assert.Same(expected, actual);
         }
 
         [Fact]
@@ -208,32 +196,30 @@ namespace MediatR.ConnectR
                 typeof(Test2Request)
             );
 
-            using (var scope = builder.Build())
-            {
-                var mediator = scope.Resolve<IMediator>();
+            using var scope = builder.Build();
+            var mediator = scope.Resolve<IMediator>();
 
-                var req1 = new Test1Request();
-                var expected1 = await mediator.Send(req1);
-                var tryGet1 = TestGenericPipeline<Test1Request, Test1Response>
-                    .RequestHistory
-                    .TryGetValue(req1, out var actual1);
+            var req1 = new Test1Request();
+            var expected1 = await mediator.Send(req1);
+            var tryGet1 = TestGenericPipeline<Test1Request, Test1Response>
+                .RequestHistory
+                .TryGetValue(req1, out var actual1);
 
-                Assert.True(tryGet1);
-                Assert.NotNull(expected1);
-                Assert.NotNull(actual1);
-                Assert.Same(expected1, actual1);
+            Assert.True(tryGet1);
+            Assert.NotNull(expected1);
+            Assert.NotNull(actual1);
+            Assert.Same(expected1, actual1);
 
-                var req2 = new Test2Request();
-                var expected2 = await mediator.Send(req2);
-                var tryGet2 = TestGenericPipeline<Test2Request, Test2Response>
-                    .RequestHistory
-                    .TryGetValue(req2, out var actual2);
+            var req2 = new Test2Request();
+            var expected2 = await mediator.Send(req2);
+            var tryGet2 = TestGenericPipeline<Test2Request, Test2Response>
+                .RequestHistory
+                .TryGetValue(req2, out var actual2);
 
-                Assert.True(tryGet2);
-                Assert.NotNull(expected2);
-                Assert.NotNull(actual2);
-                Assert.Same(expected2, actual2);
-            }
+            Assert.True(tryGet2);
+            Assert.NotNull(expected2);
+            Assert.NotNull(actual2);
+            Assert.Same(expected2, actual2);
         }
     }
 }

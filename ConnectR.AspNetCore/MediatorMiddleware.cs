@@ -31,8 +31,7 @@ namespace MediatR.ConnectR.AspNetCore
 
         public JsonSerializerSettings JsonSerializerSettings
             => MediatorMiddlewareOptions?.JsonSerializerSettings
-               ?? _jsonSerializerSettings
-               ?? (_jsonSerializerSettings = new JsonSerializerSettings()
+               ?? (_jsonSerializerSettings ??= new JsonSerializerSettings()
                {
                    Formatting = Formatting.None,
                    NullValueHandling = NullValueHandling.Ignore,
@@ -109,8 +108,8 @@ namespace MediatR.ConnectR.AspNetCore
                         if (sr.EndOfStream)
                             return new JObject();
 
-                        using (var jr = new JsonTextReader(sr))
-                            return await JObject.LoadAsync(jr);
+                        using var jr = new JsonTextReader(sr);
+                        return await JObject.LoadAsync(jr);
                     }
 
                 case "GET":
@@ -172,8 +171,8 @@ namespace MediatR.ConnectR.AspNetCore
         {
             httpResponse.ContentType = "Content-Type: application/json; charset=utf-8";
 
-            using (var sw = new StreamWriter(httpResponse.Body))
-                await sw.WriteAsync(JsonConvert.SerializeObject(responseObject, JsonSerializerSettings));
+            using var sw = new StreamWriter(httpResponse.Body);
+            await sw.WriteAsync(JsonConvert.SerializeObject(responseObject, JsonSerializerSettings));
         }
     }
 }

@@ -18,17 +18,15 @@ namespace MediatR.ConnectR
             builder.RegisterModule<MediatorModule>();
             builder.RegisterAssemblyMediatorHandlers<RegistrationTests>();
 
-            using (var scope = builder.Build())
-            {
-                var data = "Some Data";
-                var req = new Test1Request() { Data = data };
+            using var scope = builder.Build();
+            var data = "Some Data";
+            var req = new Test1Request() { Data = data };
 
-                var handler = scope.Resolve<IRequestHandler<Test1Request, Test1Response>>();
+            var handler = scope.Resolve<IRequestHandler<Test1Request, Test1Response>>();
 
-                var resp = await handler.Handle(req, CancellationToken.None);
+            var resp = await handler.Handle(req, CancellationToken.None);
 
-                Assert.Equal(data, resp.Result);
-            }
+            Assert.Equal(data, resp.Result);
         }
     }
 }
