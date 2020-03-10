@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using MediatR.ConnectR.Autofac;
 using Xunit;
-using Xunit.Sdk;
 // ReSharper disable UnusedVariable
 
 namespace MediatR.ConnectR
@@ -19,7 +15,7 @@ namespace MediatR.ConnectR
             var builder = new ContainerBuilder();
 
             builder.RegisterModule<MediatorModule>();
-            builder.RegisterAssemblyMediatorHandlers<RegistrationTests>();
+            builder.RegisterAssemblyMediatorHandlers<PipelineTests>();
 
             using var scope = builder.Build();
             var mediator = scope.Resolve<IMediator>();
@@ -44,7 +40,7 @@ namespace MediatR.ConnectR
             var builder = new ContainerBuilder();
 
             builder.RegisterModule<MediatorModule>();
-            builder.RegisterAssemblyMediatorHandlers<RegistrationTests>();
+            builder.RegisterAssemblyMediatorHandlers<PipelineTests>();
             builder.RegisterType<Test1Pipeline>()
                 .AsImplementedInterfaces();
 
@@ -72,7 +68,7 @@ namespace MediatR.ConnectR
             var builder = new ContainerBuilder();
 
             builder.RegisterModule<MediatorModule>();
-            builder.RegisterAssemblyMediatorHandlers<RegistrationTests>();
+            builder.RegisterAssemblyMediatorHandlers<PipelineTests>();
 
             using var scope = builder.Build();
             var mediator = scope.Resolve<IMediator>();
@@ -96,7 +92,7 @@ namespace MediatR.ConnectR
             var builder = new ContainerBuilder();
 
             builder.RegisterModule<MediatorModule>();
-            builder.RegisterAssemblyMediatorHandlers<RegistrationTests>();
+            builder.RegisterAssemblyMediatorHandlers<PipelineTests>();
             builder.RegisterType<TestGenericPipeline<Test1Request, Test1Response>>()
                 .AsImplementedInterfaces();
 
@@ -123,7 +119,7 @@ namespace MediatR.ConnectR
             var builder = new ContainerBuilder();
 
             builder.RegisterModule<MediatorModule>();
-            builder.RegisterAssemblyMediatorHandlers<RegistrationTests>();
+            builder.RegisterAssemblyMediatorHandlers<PipelineTests>();
             builder.RegisterAssemblyMediatorPipelines<Test1Request>();
 
             builder.RegisterTypes(
@@ -155,7 +151,7 @@ namespace MediatR.ConnectR
             var builder = new ContainerBuilder();
 
             builder.RegisterModule<MediatorModule>();
-            builder.RegisterAssemblyMediatorHandlers<RegistrationTests>();
+            builder.RegisterAssemblyMediatorHandlers<PipelineTests>();
             builder.RegisterAssemblyMediatorPipelines<Test1Request>();
 
             builder.RegisterTypes(
@@ -187,7 +183,7 @@ namespace MediatR.ConnectR
             var builder = new ContainerBuilder();
 
             builder.RegisterModule<MediatorModule>();
-            builder.RegisterAssemblyMediatorHandlers<RegistrationTests>();
+            builder.RegisterAssemblyMediatorHandlers<PipelineTests>();
             builder.RegisterAssemblyMediatorPipelines<Test1Request>();
 
             builder.RegisterPipelineForTypes(

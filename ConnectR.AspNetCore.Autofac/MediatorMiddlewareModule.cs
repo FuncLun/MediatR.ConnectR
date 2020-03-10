@@ -8,25 +8,25 @@ namespace MediatR.ConnectR.AspNetCore.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<MediatorMiddleware>();
+            builder.RegisterType<ConnectorMiddleware>();
 
-            builder.RegisterType<MediatorRegistry>()
-                .AsImplementedInterfaces()
-                .SingleInstance();
+            //builder.RegisterType<MediatorRegistry>()
+            //    .AsImplementedInterfaces()
+            //    .SingleInstance();
 
-            builder.Register(c =>
-                    new MediatorRegistry(
-                        c.ComponentRegistry
-                            .Registrations
-                            .SelectMany(r => r.Services)
-                            .OfType<TypedService>()
-                            .Select(ts => ts.ServiceType)
-                            .WhereIsMediatorWrapper()
-                            .ToList()
-                    )
-                )
-                .AsImplementedInterfaces()
-                .SingleInstance();
+            //builder.Register(c =>
+            //        new MediatorRegistry(
+            //            c.ComponentRegistry
+            //                .Registrations
+            //                .SelectMany(r => r.Services)
+            //                .OfType<TypedService>()
+            //                .Select(ts => ts.ServiceType)
+            //                .WhereIsMediatorWrapper()
+            //                .ToList()
+            //        )
+            //    )
+            //    .AsImplementedInterfaces()
+            //    .SingleInstance();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using Autofac;
 using MediatR.ConnectR.Autofac;
 using MediatR.ConnectR.HttpClient.Autofac;
@@ -40,56 +39,56 @@ namespace MediatR.ConnectR.HttpClient
         public void Mediator_NoContextExt_Resolves_HttpClient()
         {
             Builder.RegisterHttpClientRequestHandlers<TestRequest>(
-                (handler) => handler.BaseUri = _expectedBaseAddress
+                (
+                    handler
+                ) => handler.BaseUri = _expectedBaseAddress
             );
 
             using var scope = Builder.Build();
-            {
-                var httpClient = scope.Resolve<Http.HttpClient>();
-                Assert.Equal(_notUsedBaseAddress, httpClient.BaseAddress);
+            var httpClient = scope.Resolve<Http.HttpClient>();
+            Assert.Equal(_notUsedBaseAddress, httpClient.BaseAddress);
 
-                var handler = scope.Resolve<IRequestHandler<TestRequest, TestResponse>>();
-                var typedHandler = handler as HttpClientHandler<TestRequest, TestResponse>;
+            var handler = scope.Resolve<IRequestHandler<TestRequest, TestResponse>>();
+            var typedHandler = handler as HttpClientHandler<TestRequest, TestResponse>;
 
-                Assert.NotNull(typedHandler);
-                Assert.Equal(_expectedBaseAddress, typedHandler.BaseUri);
+            Assert.NotNull(typedHandler);
+            Assert.Equal(_expectedBaseAddress, typedHandler.BaseUri);
 
-                var actual = handler
-                    .GetType()
-                    .GetGenericTypeDefinition();
+            var actual = handler
+                .GetType()
+                .GetGenericTypeDefinition();
 
-                var expected = typeof(HttpClientHandler<,>);
-                Assert.Equal(expected, actual);
-
-            }
+            var expected = typeof(HttpClientHandler<,>);
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
         public void Mediator_ConfigExt_Resolves_HttpClient()
         {
             Builder.RegisterHttpClientRequestHandlers<TestRequest, ITestConfig>(
-                (handler, config) => handler.BaseUri = config.BaseUri
+                (
+                    h,
+                    c
+                ) => h.BaseUri = c.BaseUri
             );
 
             using var scope = Builder.Build();
-            {
-                var httpClient = scope.Resolve<Http.HttpClient>();
-                Assert.Equal(_notUsedBaseAddress, httpClient.BaseAddress);
+            var httpClient = scope.Resolve<Http.HttpClient>();
+            Assert.Equal(_notUsedBaseAddress, httpClient.BaseAddress);
 
-                var handler = scope.Resolve<IRequestHandler<TestRequest, TestResponse>>();
-                var typedHandler = handler as HttpClientHandler<TestRequest, TestResponse>;
+            var handler = scope.Resolve<IRequestHandler<TestRequest, TestResponse>>();
+            var typedHandler = handler as HttpClientHandler<TestRequest, TestResponse>;
 
-                Assert.NotNull(typedHandler);
-                Assert.Equal(_expectedBaseAddress, typedHandler.BaseUri);
+            Assert.NotNull(typedHandler);
+            Assert.Equal(_expectedBaseAddress, typedHandler.BaseUri);
 
-                var actual = handler
-                    .GetType()
-                    .GetGenericTypeDefinition();
+            var actual = handler
+                .GetType()
+                .GetGenericTypeDefinition();
 
-                var expected = typeof(HttpClientHandler<,>);
-                Assert.Equal(expected, actual);
+            var expected = typeof(HttpClientHandler<,>);
+            Assert.Equal(expected, actual);
 
-            }
         }
     }
 }

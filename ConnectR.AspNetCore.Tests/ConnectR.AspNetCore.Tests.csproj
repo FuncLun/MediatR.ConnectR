@@ -26,9 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ConnectR.AspNetCore.Autofac\ConnectR.AspNetCore.Autofac.csproj" />
     <ProjectReference Include="..\ConnectR.AspNetCore\ConnectR.AspNetCore.csproj" />
-    <ProjectReference Include="..\ConnectR.Autofac\ConnectR.Autofac.csproj" />
     <ProjectReference Include="..\ConnectR\ConnectR.csproj" />
   </ItemGroup>
 

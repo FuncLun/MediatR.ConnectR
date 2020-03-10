@@ -13,11 +13,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="_Deprecated\**" />
+    <EmbeddedResource Remove="_Deprecated\**" />
+    <None Remove="_Deprecated\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MediatR" Version="7.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="7.17.0.9346">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="_Deprecated\" />
   </ItemGroup>
 
 </Project>

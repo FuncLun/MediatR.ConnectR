@@ -1,5 +1,6 @@
 # MediatR.ConnectR
 _MediatR.ConnectR is not associated with the makers of MediatR._
+_In a future release, I will probably drop the MediatR root namespace._
 
 ## MediatR Introduction
 MediatR is an Apache License 2.0 Open Source Software product 
@@ -25,15 +26,23 @@ is a colleciton of client/server packages to facility automatically connecting r
 notifications to remote processes.
 
 # Projets
+
 ## Core
 The Core projects contain helper classes and extensions used by other projects. For example,
 it contains assembly scanning classes to find IRequest<> and INotification classes. It also 
-includes a Mediator Wrappers to allow `TResponse Task<TRequuest>` functions to be called 
+includes a ConnectorEntry classes to allow `TResponse Task<TRequuest>` functions to be called 
 as if they were `object Task<object>` functions.
 
 ## AspNetCore
 Contians projects used by AspNetCore to implement an opinionated Web API Middleware, without 
 the need for MVC.
+
+Significant classes:
+
+* ConnectorCollection
+* ConnectorEntry
+* ConnectorProvider
+* ConnectorMiddleware
 
 ## BlazorHttpClient
 Contains projects used by a Blazor browser client. The Blazor server would use the AspNetCore
