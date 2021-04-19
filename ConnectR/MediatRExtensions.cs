@@ -26,6 +26,8 @@ namespace MediatR.ConnectR
             return services;
         }
 
+
+
         public static IServiceCollection AddMediatR(
             this IServiceCollection services
         )
@@ -37,8 +39,10 @@ namespace MediatR.ConnectR
         )
         {
             var serviceConfiguration = new MediatRServiceConfiguration();
+
             configuration?.Invoke(serviceConfiguration);
             ServiceRegistrar.AddRequiredServices(services, serviceConfiguration);
+            
             return services;
         }
 

@@ -45,7 +45,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{56F71B2E-D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectR.Autofac.Tests", "ConnectR.Autofac.Tests\ConnectR.Autofac.Tests.csproj", "{C1DD3131-CA8D-440B-A48E-62228AF9079F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectR.MvcCore.Example", "ConnectR.MvcCore.Example\ConnectR.MvcCore.Example.csproj", "{3D99181A-03CD-4EF8-A50D-2B56645D5C6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectR.MvcCore.Example", "ConnectR.MvcCore.Example\ConnectR.MvcCore.Example.csproj", "{3D99181A-03CD-4EF8-A50D-2B56645D5C6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

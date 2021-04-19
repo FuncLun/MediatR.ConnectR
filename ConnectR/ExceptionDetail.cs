@@ -6,7 +6,10 @@ namespace MediatR.ConnectR
 {
     public class ExceptionDetail
     {
-        public ExceptionDetail(Exception exception, bool includeDetails)
+        public ExceptionDetail(
+            Exception exception,
+            bool includeDetails
+        )
         {
             Message = exception.Message;
             if (!includeDetails)
@@ -23,6 +26,7 @@ namespace MediatR.ConnectR
                     .Select(ae => new ExceptionDetail(ae, true))
                     .ToList();
         }
+
         public string Message { get; }
         public string ExceptionType { get; }
         public string StackTrace { get; }
